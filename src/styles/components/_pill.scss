@@ -1,0 +1,63 @@
+// Pill de endereço / info (fundo branco, texto navy, ícone no acento)
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.1rem 0.6rem 0.8rem;
+  font-weight: 700;
+  font-size: var(--fs-small);
+  color: var(--c-navy);
+  background: var(--c-white);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-sm);
+
+  .icon {
+    width: 1.25em;
+    height: 1.25em;
+    color: var(--accent, var(--c-rosa));
+  }
+
+  &--dark {
+    color: var(--c-white);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: none;
+    backdrop-filter: blur(6px);
+
+    .icon {
+      color: var(--c-white);
+    }
+  }
+}
+
+// Chip de rótulo sobre foto (branco + navy; ícone no acento)
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem 0.5rem 0.7rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  letter-spacing: -0.01em;
+  color: var(--c-navy);
+  background: var(--c-white);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-md);
+
+  .chip__icon {
+    display: grid;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    background: var(--accent-tint, var(--c-rosa-tint));
+    color: var(--accent, var(--c-rosa));
+
+    .icon {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+}

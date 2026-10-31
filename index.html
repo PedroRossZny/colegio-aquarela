@@ -1,0 +1,1035 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <!-- ===================== RASTREAMENTO =====================
+         Google Analytics (GA4), snippet padrão com o ID entrando por token
+         (configurável em site.config.js → tracking.ga4Id). O bloco só vai para
+         o HTML final quando o ID deixa de ser o placeholder (ver vite.config.js):
+         com o placeholder, nada é carregado e nenhuma requisição sai. -->
+    <!-- {{#GA4}} -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{GA4_ID}}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '{{GA4_ID}}');
+    </script>
+    <!-- {{/GA4}} -->
+
+    <title>{{TITLE}}</title>
+    <meta name="description" content="{{DESCRIPTION}}" />
+
+    <meta name="theme-color" content="#001870" />
+    <meta name="color-scheme" content="light" />
+    <link rel="canonical" href="{{SITE_URL}}/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="{{NAME}}" />
+    <meta property="og:title" content="{{TITLE}}" />
+    <meta property="og:description" content="{{DESCRIPTION}}" />
+    <meta property="og:url" content="{{SITE_URL}}/" />
+    <meta property="og:image" content="{{SITE_URL}}/logos/{{LOGO}}/og-image-1200x630.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Logotipo do {{NAME}}" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{TITLE}}" />
+    <meta name="twitter:description" content="{{DESCRIPTION}}" />
+    <meta name="twitter:image" content="{{SITE_URL}}/logos/{{LOGO}}/og-image-1200x630.png" />
+
+    <!-- Ícones (variam com a logo escolhida em site.config.js) -->
+    <link rel="icon" href="/logos/{{LOGO}}/favicon-32.ico" sizes="32x32" />
+    <link rel="icon" href="/logos/{{LOGO}}/favicon-16.ico" sizes="16x16" />
+    <link rel="apple-touch-icon" href="/logos/{{LOGO}}/apple-touch-icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Tipografia -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- CSS das fontes sem bloquear a renderização (display=swap) -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Caveat:wght@600&family=Nunito:wght@400;600;700;800&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Caveat:wght@600&family=Nunito:wght@400;600;700;800&display=swap"
+      />
+    </noscript>
+
+    <!-- Marca que há JS: o CSS esconde o hero até o GSAP assumir (com failsafe de 3s) -->
+    <script>document.documentElement.classList.add('js');</script>
+    <script type="module" src="/src/main.js"></script>
+  </head>
+
+  <body>
+    <!-- Sprite de ícones (Bootstrap Icons + ícones próprios) -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+      <symbol id="i-whatsapp" viewBox="0 0 16 16"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/></symbol>
+      <symbol id="i-instagram" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/></symbol>
+      <symbol id="i-facebook" viewBox="0 0 16 16"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/></symbol>
+      <symbol id="i-phone" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/></symbol>
+      <symbol id="i-arrow-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/></symbol>
+      <symbol id="i-arrow-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></symbol>
+      <symbol id="i-arrow-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/></symbol>
+      <symbol id="i-heart" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/></symbol>
+      <symbol id="i-book" viewBox="0 0 16 16"><path d="M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/></symbol>
+      <symbol id="i-mortarboard" viewBox="0 0 16 16"><path d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917z"/><path d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466z"/></symbol>
+      <symbol id="i-star" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></symbol>
+      <symbol id="i-palette" viewBox="0 0 16 16"><path d="M12.433 10.07C14.133 10.585 16 11.15 16 8a8 8 0 1 0-8 8c1.996 0 1.826-1.504 1.649-3.08-.124-1.101-.252-2.237.351-2.92.465-.527 1.42-.237 2.433.07M8 5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m4.5 3a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3M5 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m.5 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/></symbol>
+      <symbol id="i-translate" viewBox="0 0 16 16"><path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286zm1.634-.736L5.5 3.956h-.049l-.679 2.022z"/><path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zm7.138 9.995q.289.451.63.846c-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6 6 0 0 1-.415-.492 2 2 0 0 1-.94.31"/></symbol>
+      <symbol id="i-building" viewBox="0 0 16 16"><path d="M3 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3v-3.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V16h3a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1zm1 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5M4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/></symbol>
+      <symbol id="i-journal" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6 1h6v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8z"/><path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/><path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/></symbol>
+      <symbol id="i-people" viewBox="0 0 16 16"><path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/></symbol>
+      <symbol id="i-pc" viewBox="0 0 16 16"><path d="M8 1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1zm1 13.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M9.5 1a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM9 3.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 0-1h-5a.5.5 0 0 0-.5.5M1.5 2A1.5 1.5 0 0 0 0 3.5v7A1.5 1.5 0 0 0 1.5 12H6v2h-.5a.5.5 0 0 0 0 1H7v-4H1.5a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5H7V2z"/></symbol>
+      <symbol id="i-scissors" viewBox="0 0 16 16"><path d="M3.5 3.5c-.614-.884-.074-1.962.858-2.5L8 7.226 11.642 1c.932.538 1.472 1.616.858 2.5L8.81 8.61l1.556 2.661a2.5 2.5 0 1 1-.794.637L8 9.73l-1.572 2.177a2.5 2.5 0 1 1-.794-.637L7.19 8.61zm2.5 10a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0m7 0a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0"/></symbol>
+      <symbol id="i-zoom-in" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11M13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0"/><path d="M10.344 11.742q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1 6.5 6.5 0 0 1-1.398 1.4z"/><path fill-rule="evenodd" d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 0-1H6V3.5a.5.5 0 0 1 .5-.5"/></symbol>
+      <symbol id="i-close" viewBox="0 0 16 16"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></symbol>
+      <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/></symbol>
+      <symbol id="i-check" viewBox="0 0 16 16"><path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 16 16"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/></symbol>
+      <symbol id="i-music" viewBox="0 0 16 16"><path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13s1.12-2 2.5-2 2.5.896 2.5 2m9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2"/><path fill-rule="evenodd" d="M14 11V2h1v9zM6 3v10H5V3z"/><path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4z"/></symbol>
+      <!-- Ícones próprios (traço) -->
+      <symbol id="i-slide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V7.5"/><path d="M4 7.5h5.5"/><path d="M4 11.5h2.5M4 15.5h2.5"/><path d="M9.5 7.5 17.8 16c1 1 1.5 2 1.5 3.3V21"/><path d="M9.5 7.5v2.5"/></symbol>
+      <symbol id="i-ball" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M3 12h18"/><path d="M5.6 5.6c2.6 2.6 2.6 10.2 0 12.8"/><path d="M18.4 5.6c-2.6 2.6-2.6 10.2 0 12.8"/></symbol>
+      <symbol id="i-brush" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 3.5c-3.2.3-8.6 5.9-10.6 8.7l2 2c2.8-2 8.4-7.4 8.7-10.6z"/><path d="M9.5 12.6c-1.9-.2-3.3.8-3.8 2.6-.5 1.9-1.1 3.2-2.7 3.8 2.2 1.1 6 .9 7.6-1.1 1-1.3 1-2.8.6-3.7"/></symbol>
+      <symbol id="i-ballet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.4 9.4c-2.2 1-3.6 4.4-2.9 7.4.5 2 1.7 3.5 3.3 3.9 1.4.3 2.5-.6 2.8-2.2.5-3.1-.4-8.6-3.2-9.1z"/><path d="M14.6 9.4c2.2 1 3.6 4.4 2.9 7.4-.5 2-1.7 3.5-3.3 3.9-1.4.3-2.5-.6-2.8-2.2-.5-3.1.4-8.6 3.2-9.1z"/><path d="M8.5 9.5 5 4M11 9.5l2.5-5.5M13 9.5 10.5 4M15.5 9.5 19 4"/></symbol>
+      <symbol id="i-judo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18v5H3z"/><path d="M9.5 7l2.5 3 2.5-3M9.5 12l2.5-3 2.5 3"/><path d="M11 12l-3 8M13 12l3 8"/></symbol>
+      <symbol id="i-chef" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 13.2A3.6 3.6 0 0 1 7.6 6.2a4.6 4.6 0 0 1 8.8 0 3.6 3.6 0 0 1 1.1 7"/><path d="M6.5 13v6.5A1.5 1.5 0 0 0 8 21h8a1.5 1.5 0 0 0 1.5-1.5V13"/><path d="M6.5 17h11"/></symbol>
+      <symbol id="i-sprout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21h12"/><path d="M12 21v-9"/><path d="M12 12c0-3.6 2.6-6.5 6.5-6.5 0 3.6-2.6 6.5-6.5 6.5z"/><path d="M12 15c0-2.9-2.1-5.2-5.2-5.2 0 2.9 2.1 5.2 5.2 5.2z"/></symbol>
+    </svg>
+
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <!-- ===================== CABEÇALHO ===================== -->
+    <header class="site-header" id="topo">
+      <div class="site-header__inner">
+        <a class="brand" href="#inicio" aria-label="{{NAME}} — início">
+          <picture>
+            <source type="image/webp" srcset="/logos/{{LOGO}}/logo-200.webp 200w, /logos/{{LOGO}}/logo-400.webp 400w" sizes="110px" />
+            <img src="/logos/{{LOGO}}/logo-400.png" width="{{LOGO_W}}" height="{{LOGO_H}}" alt="{{NAME}}" decoding="async" />
+          </picture>
+        </a>
+
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav class="site-nav" id="menu-principal" aria-label="Principal">
+          <ul class="site-nav__list" role="list">
+            <li><a class="site-nav__link" href="#segmentos">Segmentos</a></li>
+            <li><a class="site-nav__link" href="#diferenciais">Diferenciais</a></li>
+            <li><a class="site-nav__link" href="#atividades">Atividades</a></li>
+            <!-- {{#VESTIBULINHO}} -->
+            <li><a class="site-nav__link" href="#vestibulinho">Vestibulinho</a></li>
+            <!-- {{/VESTIBULINHO}} -->
+            <li><a class="site-nav__link" href="#contato">Contato</a></li>
+          </ul>
+          <a class="btn btn--sm site-nav__cta" href="{{WHATSAPP_URL}}" target="_blank" rel="noopener">
+            <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+            Agendar visita
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="conteudo">
+      <!-- ===================== HERO ===================== -->
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <span class="blob blob--rosa hero__blob hero__blob--1" aria-hidden="true"></span>
+        <span class="blob blob--verde blob--2 hero__blob hero__blob--2" aria-hidden="true"></span>
+        <span class="blob blob--laranja blob--3 hero__blob hero__blob--3" aria-hidden="true"></span>
+
+        <div class="container hero__inner">
+          <div class="hero__content">
+            <p class="eyebrow accent-rosa" data-hero="eyebrow">
+              <svg class="icon" aria-hidden="true"><use href="#i-brush" /></svg>
+              Colégio Aquarela · Guaíra/SP
+            </p>
+            <h1 class="hero__title accent-verde" id="hero-title" data-hero="title">
+              Plantamos conhecimento e cultivamos <em class="paint paint--verde">futuro</em>.
+            </h1>
+            <p class="lead hero__lead" data-hero="lead">
+              Uma educação que acolhe, ensina e prepara para a vida, acompanhando cada aluno em sua jornada de descobertas e aprendizados.
+            </p>
+            <p class="pill accent-rosa hero__pill" data-hero="pill">
+              <svg class="icon" aria-hidden="true"><use href="#i-pin" /></svg>
+              {{ADDRESS}}
+            </p>
+            <div class="hero__actions" data-hero="actions">
+              <a class="btn btn--rosa" href="{{WHATSAPP_URL}}" target="_blank" rel="noopener">
+                <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+                Agende uma visita
+              </a>
+              <a class="btn btn--ghost btn--lg" href="#segmentos">
+                Conheça a escola
+                <svg class="icon icon--down" aria-hidden="true"><use href="#i-arrow-down" /></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="hero__media" data-hero="media">
+            <div class="hero__frame">
+              <picture>
+                <source
+                  type="image/webp"
+                  srcset="/img/hero-768.webp 768w, /img/hero-1280.webp 1280w, /img/hero-1920.webp 1920w"
+                  sizes="(min-width: 64em) 52vw, 100vw"
+                />
+                <img
+                  src="/img/hero-1280.jpg"
+                  srcset="/img/hero-768.jpg 768w, /img/hero-1280.jpg 1280w, /img/hero-1920.jpg 1920w"
+                  sizes="(min-width: 64em) 52vw, 100vw"
+                  width="1920"
+                  height="1080"
+                  alt="Fachada do Colégio Aquarela: prédio verde com o letreiro e a logo, a lista de segmentos e o telefone pintados na parede, e os recortes do menino e da menina da logo ao lado da entrada"
+                  fetchpriority="high"
+                  decoding="async"
+                />
+              </picture>
+            </div>
+
+            <div class="hero__card" data-hero="card">
+              <p class="hero__card-title">Do Berçário ao Ensino Médio</p>
+              <ul role="list">
+                <li><span class="dot" aria-hidden="true"></span>Berçário e Educação Infantil</li>
+                <li><span class="dot dot--laranja" aria-hidden="true"></span>Ensino Fundamental I e II</li>
+                <li><span class="dot dot--verde" aria-hidden="true"></span>Ensino Médio</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Faixa decorativa -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <span>Berçário</span><i class="dot"></i>
+          <span>Educação Infantil</span><i class="dot dot--laranja"></i>
+          <span>Ensino Fundamental I e II</span><i class="dot dot--verde"></i>
+          <span>Ensino Médio</span><i class="dot"></i>
+          <span>Berçário</span><i class="dot dot--laranja"></i>
+          <span>Educação Infantil</span><i class="dot dot--verde"></i>
+          <span>Ensino Fundamental I e II</span><i class="dot"></i>
+          <span>Ensino Médio</span><i class="dot dot--laranja"></i>
+        </div>
+      </div>
+
+      <!-- ===================== SEGMENTOS ===================== -->
+      <section class="section segmentos" id="segmentos" aria-labelledby="segmentos-title">
+        <div class="container">
+          <header class="section-head section-head--center" data-aos="fade-up">
+            <p class="eyebrow accent-verde">
+              <svg class="icon" aria-hidden="true"><use href="#i-star" /></svg>
+              Segmentos
+            </p>
+            <h2 id="segmentos-title">Do Berçário ao <em class="paint paint--laranja">Ensino Médio</em></h2>
+          </header>
+
+          <div class="segmentos__list">
+            <div class="segmentos__line" aria-hidden="true"><span class="segmentos__line-fill"></span></div>
+
+            <!-- 01 · Berçário e Educação Infantil -->
+            <article class="segmento accent-rosa" id="bercario">
+              <div class="segmento__media" data-aos="fade-right">
+                <div class="segmento__frame">
+                  <picture>
+                    <source type="image/webp" srcset="/img/bercario-600.webp 600w, /img/bercario-800.webp 800w, /img/bercario-1000.webp 1000w" sizes="(min-width: 64em) 46vw, 100vw" />
+                    <img
+                      src="/img/bercario-1000.jpg"
+                      srcset="/img/bercario-600.jpg 600w, /img/bercario-800.jpg 800w, /img/bercario-1000.jpg 1000w"
+                      sizes="(min-width: 64em) 46vw, 100vw"
+                      width="1000"
+                      height="750"
+                      alt="Duas crianças pequenas de babador Aquarela brincam com massinha em uma bacia verde"
+                      loading="lazy"
+                      decoding="async"
+                      data-parallax
+                    />
+                  </picture>
+                </div>
+                <span class="segmento__num" aria-hidden="true">01</span>
+              </div>
+              <div class="segmento__node" aria-hidden="true">01</div>
+              <div class="segmento__body" data-aos="fade-up">
+                <!-- Dupla de personagens da logo mascote (só a ilustração; a logo
+                     vetorial segue no cabeçalho e no favicon). Decorativa: o h3 é o nome. -->
+                <span class="segmento__icon segmento__icon--mascote" aria-hidden="true">
+                  <picture>
+                    <source type="image/webp" srcset="/logos/mascote/personagens-200.webp 1x, /logos/mascote/personagens-400.webp 2x" />
+                    <img src="/logos/mascote/personagens-200.png" srcset="/logos/mascote/personagens-400.png 2x" width="200" height="99" alt="" loading="lazy" decoding="async" />
+                  </picture>
+                </span>
+                <h3>Berçário e Educação Infantil</h3>
+                <p class="segmento__tagline">Cuidamos do seu filho enquanto você cuida do futuro dele.</p>
+                <p class="segmento__text">
+                  Um ambiente acolhedor, seguro e preparado para acompanhar cada fase do desenvolvimento da criança, valorizando o cuidado, o afeto, a autonomia e as descobertas.
+                </p>
+              </div>
+            </article>
+
+            <!-- 02 · Ensino Fundamental I e II -->
+            <article class="segmento segmento--reverse accent-laranja" id="fundamental">
+              <div class="segmento__media" data-aos="fade-left">
+                <div class="segmento__frame">
+                  <picture>
+                    <source type="image/webp" srcset="/img/fundamental-600.webp 600w, /img/fundamental-800.webp 800w, /img/fundamental-1000.webp 1000w" sizes="(min-width: 64em) 46vw, 100vw" />
+                    <img
+                      src="/img/fundamental-1000.jpg"
+                      srcset="/img/fundamental-600.jpg 600w, /img/fundamental-800.jpg 800w, /img/fundamental-1000.jpg 1000w"
+                      sizes="(min-width: 64em) 46vw, 100vw"
+                      width="1000"
+                      height="750"
+                      alt="Três alunas de jaleco branco mostram seus crachás em uma feira de ciências, com radiografias e cartazes na parede"
+                      loading="lazy"
+                      decoding="async"
+                      data-parallax
+                    />
+                  </picture>
+                </div>
+                <span class="segmento__num" aria-hidden="true">02</span>
+              </div>
+              <div class="segmento__node" aria-hidden="true">02</div>
+              <div class="segmento__body" data-aos="fade-up">
+                <span class="segmento__icon" aria-hidden="true"><svg class="icon"><use href="#i-book" /></svg></span>
+                <h3>Ensino Fundamental I e II</h3>
+                <p class="segmento__tagline">Conhecimento que transforma.</p>
+                <p class="segmento__text">
+                  Uma formação que estimula a curiosidade, o pensamento crítico, a autonomia e o desenvolvimento de habilidades para os desafios de cada etapa escolar.
+                </p>
+              </div>
+            </article>
+
+            <!-- 03 · Ensino Médio -->
+            <article class="segmento accent-verde" id="ensino-medio">
+              <div class="segmento__media" data-aos="fade-right">
+                <div class="segmento__frame">
+                  <picture>
+                    <source type="image/webp" srcset="/img/ensino-medio-600.webp 600w, /img/ensino-medio-800.webp 800w, /img/ensino-medio-1000.webp 1000w" sizes="(min-width: 64em) 46vw, 100vw" />
+                    <img
+                      src="/img/ensino-medio-1000.jpg"
+                      srcset="/img/ensino-medio-600.jpg 600w, /img/ensino-medio-800.jpg 800w, /img/ensino-medio-1000.jpg 1000w"
+                      sizes="(min-width: 64em) 46vw, 100vw"
+                      width="1000"
+                      height="750"
+                      alt="Aluno de uniforme apresenta um cartaz sobre o ciclo de vida das abelhas em uma feira de ciências"
+                      loading="lazy"
+                      decoding="async"
+                      data-parallax
+                    />
+                  </picture>
+                </div>
+                <span class="segmento__num" aria-hidden="true">03</span>
+              </div>
+              <div class="segmento__node" aria-hidden="true">03</div>
+              <div class="segmento__body" data-aos="fade-up">
+                <span class="segmento__icon" aria-hidden="true"><svg class="icon"><use href="#i-mortarboard" /></svg></span>
+                <h3>Ensino Médio</h3>
+                <p class="segmento__tagline">Preparando para o futuro.</p>
+                <p class="segmento__text">
+                  Conhecimento, responsabilidade, autonomia e preparação para os próximos passos da vida acadêmica e profissional.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SISTEMA DE ENSINO POSITIVO ===================== -->
+      <!-- Entre os Segmentos e os Diferenciais de propósito: fecha a parte
+           acadêmica (os níveis + o sistema que os apoia) antes de falar do que
+           diferencia.
+           A logo é marca de terceiro, usada como veio; fica num cartão branco
+           porque o letreiro dela é preto e sumiria sobre fundo escuro. -->
+      <section class="section positivo" id="positivo" aria-labelledby="positivo-title">
+        <span class="blob blob--verde positivo__blob" aria-hidden="true"></span>
+
+        <div class="container">
+          <div class="positivo__inner">
+            <div class="positivo__body" data-aos="fade-up">
+              <span class="dabs" aria-hidden="true"><span></span><span></span><span></span></span>
+              <h2 id="positivo-title">Sistema de Ensino <em class="paint paint--verde">Positivo</em></h2>
+              <p>
+                No Colégio Aquarela, contamos com a qualidade e a excelência do Sistema de Ensino Positivo, que oferece materiais e recursos pedagógicos pensados para acompanhar cada etapa da aprendizagem.
+              </p>
+              <p>
+                Por meio de uma proposta completa e atualizada, nossos alunos são estimulados a desenvolver conhecimentos, habilidades e competências, tornando o aprendizado mais significativo e conectado aos desafios do mundo atual.
+              </p>
+            </div>
+
+            <!-- A logo já é anunciada pelo <h2> ao lado; aqui ela é decorativa
+                 (alt vazio) para o leitor de tela não repetir o nome. -->
+            <div class="positivo__selo" data-aos="fade-left" data-aos-delay="80">
+              <picture>
+                <source type="image/webp" srcset="/logos/positivo/logo-280.webp 1x, /logos/positivo/logo-560.webp 2x" />
+                <img
+                  src="/logos/positivo/logo-280.png"
+                  srcset="/logos/positivo/logo-560.png 2x"
+                  width="280"
+                  height="78"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== DIFERENCIAIS ===================== -->
+      <section class="section diferenciais on-dark" id="diferenciais" aria-labelledby="diferenciais-title">
+        <div class="brush-divider brush-divider--top" aria-hidden="true">
+          <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+            <path fill="#001870" opacity=".38" d="M0 90V66c150-16 260 14 420-6 180-22 340 0 480-12 160-14 300 22 540-2v44Z" />
+            <path fill="#001870" d="M0 90V55c90-15 180 15 300-3 120-18 220-30 360-12s240-10 380-4 250 30 400 8v46Z" />
+          </svg>
+        </div>
+
+        <div class="container">
+          <header class="section-head section-head--center" data-aos="fade-up">
+            <span class="dabs" aria-hidden="true"><span></span><span></span><span></span></span>
+            <h2 id="diferenciais-title">Nossos <em class="paint paint--rosa">diferenciais</em></h2>
+          </header>
+
+          <ul class="diferenciais__grid" role="list">
+            <li class="dif-item accent-rosa" data-aos="fade-up" data-aos-delay="0">
+              <div class="dif">
+                <span class="dif__icon" aria-hidden="true"><svg class="icon"><use href="#i-heart" /></svg></span>
+                <h3>Educação Socioemocional</h3>
+              </div>
+              </li>
+            <li class="dif-item accent-laranja" data-aos="fade-up" data-aos-delay="80">
+              <div class="dif">
+                <span class="dif__icon" aria-hidden="true"><svg class="icon"><use href="#i-translate" /></svg></span>
+                <h3>PES – Programa de Ensino de Inglês</h3>
+              </div>
+              </li>
+            <li class="dif-item accent-verde" data-aos="fade-up" data-aos-delay="160">
+              <div class="dif">
+                <span class="dif__icon" aria-hidden="true"><svg class="icon"><use href="#i-building" /></svg></span>
+                <h3>Ensino Integral</h3>
+              </div>
+              </li>
+            <li class="dif-item accent-rosa" data-aos="fade-up" data-aos-delay="240">
+              <div class="dif">
+                <span class="dif__icon" aria-hidden="true"><svg class="icon"><use href="#i-journal" /></svg></span>
+                <h3>Acompanhamento pedagógico</h3>
+              </div>
+              </li>
+            <li class="dif-item accent-laranja" data-aos="fade-up" data-aos-delay="320">
+              <div class="dif">
+                <span class="dif__icon" aria-hidden="true"><svg class="icon"><use href="#i-people" /></svg></span>
+                <h3>Equipe preparada e acolhedora</h3>
+              </div>
+              </li>
+          </ul>
+        </div>
+
+        <div class="brush-divider brush-divider--bottom" aria-hidden="true">
+          <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+            <path fill="#001870" opacity=".38" d="M0 90V66c150-16 260 14 420-6 180-22 340 0 480-12 160-14 300 22 540-2v44Z" />
+            <path fill="#001870" d="M0 90V55c90-15 180 15 300-3 120-18 220-30 360-12s240-10 380-4 250 30 400 8v46Z" />
+          </svg>
+        </div>
+      </section>
+
+      <!-- ===================== ATIVIDADES EXTRAS ===================== -->
+      <section class="section atividades" id="atividades" aria-labelledby="atividades-title">
+        <div class="container">
+          <header class="section-head section-head--center" data-aos="fade-up">
+            <span class="dabs" aria-hidden="true"><span></span><span></span><span></span></span>
+            <h2 id="atividades-title">Atividades <em class="paint paint--verde">Extras</em></h2>
+            <p>Além da formação acadêmica, nossos alunos têm oportunidades de aprender, criar, explorar e desenvolver novos talentos.</p>
+          </header>
+
+          <ul class="atividades__grid" role="list">
+            <li class="ativ accent-rosa">
+              <button class="ativ__btn" type="button" aria-haspopup="dialog" aria-controls="ativ-dialog" aria-label="Saiba mais sobre Informática">
+                <span class="ativ__media">
+                  <picture>
+                    <source type="image/webp" srcset="/img/informatica-480.webp 480w, /img/informatica-800.webp 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" />
+                    <img src="/img/informatica-800.jpg" srcset="/img/informatica-480.jpg 480w, /img/informatica-800.jpg 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" width="800" height="800" alt="Dois meninos em cabines de computador: um usa fones de ouvido e o mouse, o outro sorri para a câmera" loading="lazy" decoding="async" />
+                  </picture>
+                </span>
+                <span class="ativ__curtain" aria-hidden="true"></span>
+                <span class="ativ__expand" aria-hidden="true"><svg class="icon"><use href="#i-zoom-in" /></svg></span>
+                <span class="chip"><span class="chip__icon" aria-hidden="true"><svg class="icon"><use href="#i-pc" /></svg></span>Informática</span>
+              </button>
+              <template class="ativ__detail">
+                <h3>Informática</h3>
+                <p>O contato com computadores e tecnologia desde os primeiros anos escolares desperta no aluno o raciocínio lógico, a autonomia digital e a curiosidade para resolver problemas do dia a dia. Em um ambiente estruturado e seguro, as crianças aprendem brincando, descobrindo ferramentas que vão acompanhar toda a vida acadêmica e profissional delas.</p>
+              </template>
+            </li>
+            <li class="ativ accent-laranja">
+              <button class="ativ__btn" type="button" aria-haspopup="dialog" aria-controls="ativ-dialog" aria-label="Saiba mais sobre Ballet">
+                <span class="ativ__media">
+                  <picture>
+                    <source type="image/webp" srcset="/img/ballet-480.webp 480w, /img/ballet-800.webp 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" />
+                    <img src="/img/ballet-800.jpg" srcset="/img/ballet-480.jpg 480w, /img/ballet-800.jpg 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" width="800" height="800" alt="Cinco meninas de collant e saia de ballet, em fila sobre o tatame azul, com os braços erguidos acima da cabeça" loading="lazy" decoding="async" />
+                  </picture>
+                </span>
+                <span class="ativ__curtain" aria-hidden="true"></span>
+                <span class="ativ__expand" aria-hidden="true"><svg class="icon"><use href="#i-zoom-in" /></svg></span>
+                <span class="chip"><span class="chip__icon" aria-hidden="true"><svg class="icon"><use href="#i-ballet" /></svg></span>Ballet</span>
+              </button>
+              <template class="ativ__detail">
+                <h3>Ballet</h3>
+                <p>A dança trabalha postura, disciplina, coordenação motora e expressão corporal, unindo música e movimento em cada aula. Além dos benefícios físicos, o ballet estimula a concentração, a autoconfiança e o respeito ao trabalho em grupo, valores que os alunos levam para além da sala de aula.</p>
+              </template>
+            </li>
+            <li class="ativ accent-verde">
+              <button class="ativ__btn" type="button" aria-haspopup="dialog" aria-controls="ativ-dialog" aria-label="Saiba mais sobre Judô">
+                <span class="ativ__media">
+                  <picture>
+                    <source type="image/webp" srcset="/img/judo-480.webp 480w, /img/judo-800.webp 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" />
+                    <img src="/img/judo-800.jpg" srcset="/img/judo-480.jpg 480w, /img/judo-800.jpg 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" width="800" height="800" alt="Quatro crianças de quimono e faixa branca, abraçadas e sorrindo, descalças sobre o tatame amarelo" loading="lazy" decoding="async" />
+                  </picture>
+                </span>
+                <span class="ativ__curtain" aria-hidden="true"></span>
+                <span class="ativ__expand" aria-hidden="true"><svg class="icon"><use href="#i-zoom-in" /></svg></span>
+                <span class="chip"><span class="chip__icon" aria-hidden="true"><svg class="icon"><use href="#i-judo" /></svg></span>Judô</span>
+              </button>
+              <template class="ativ__detail">
+                <h3>Judô</h3>
+                <p>Mais do que uma luta, o judô ensina respeito, foco e autocontrole dentro e fora do tatame. Através da prática constante, os alunos desenvolvem disciplina, consciência corporal e aprendem a lidar com limites, vitórias e desafios de forma equilibrada.</p>
+              </template>
+            </li>
+            <li class="ativ accent-verde">
+              <button class="ativ__btn" type="button" aria-haspopup="dialog" aria-controls="ativ-dialog" aria-label="Saiba mais sobre Cozinha Experimental">
+                <span class="ativ__media">
+                  <picture>
+                    <source type="image/webp" srcset="/img/cozinha-experimental-480.webp 480w, /img/cozinha-experimental-800.webp 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" />
+                    <img src="/img/cozinha-experimental-800.jpg" srcset="/img/cozinha-experimental-480.jpg 480w, /img/cozinha-experimental-800.jpg 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" width="800" height="800" alt="Duas alunas de avental Aquarela, uma de touca de chef e outra de touca descartável, servem salada com pegador; na mesa, pratos com tomate, pepino e cenoura ralada" loading="lazy" decoding="async" />
+                  </picture>
+                </span>
+                <span class="ativ__curtain" aria-hidden="true"></span>
+                <span class="ativ__expand" aria-hidden="true"><svg class="icon"><use href="#i-zoom-in" /></svg></span>
+                <span class="chip"><span class="chip__icon" aria-hidden="true"><svg class="icon"><use href="#i-chef" /></svg></span>Cozinha Experimental</span>
+              </button>
+              <template class="ativ__detail">
+                <h3>Cozinha Experimental</h3>
+                <p>Medir ingredientes, seguir uma receita e criar algo novo transformam a cozinha em uma verdadeira sala de aula. As crianças exercitam matemática, ciências e trabalho em equipe enquanto se divertem preparando pequenas receitas ao lado dos colegas.</p>
+              </template>
+            </li>
+            <li class="ativ accent-rosa">
+              <button class="ativ__btn" type="button" aria-haspopup="dialog" aria-controls="ativ-dialog" aria-label="Saiba mais sobre Artesanato">
+                <span class="ativ__media">
+                  <picture>
+                    <source type="image/webp" srcset="/img/artesanato-480.webp 480w, /img/artesanato-800.webp 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" />
+                    <img src="/img/artesanato-800.jpg" srcset="/img/artesanato-480.jpg 480w, /img/artesanato-800.jpg 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" width="800" height="800" alt="Três alunas de uniforme, em frente ao quadro-negro, mostram as dobraduras de papel colorido que fizeram em sala" loading="lazy" decoding="async" />
+                  </picture>
+                </span>
+                <span class="ativ__curtain" aria-hidden="true"></span>
+                <span class="ativ__expand" aria-hidden="true"><svg class="icon"><use href="#i-zoom-in" /></svg></span>
+                <span class="chip"><span class="chip__icon" aria-hidden="true"><svg class="icon"><use href="#i-scissors" /></svg></span>Artesanato</span>
+              </button>
+              <template class="ativ__detail">
+                <h3>Artesanato</h3>
+                <p>Cortar, colar, pintar e moldar com as próprias mãos desenvolve a coordenação motora fina, a paciência e a criatividade dos alunos. Cada projeto é uma nova oportunidade de expressar ideias e sentimentos através da arte, valorizando o processo tanto quanto o resultado.</p>
+              </template>
+            </li>
+            <li class="ativ accent-laranja">
+              <button class="ativ__btn" type="button" aria-haspopup="dialog" aria-controls="ativ-dialog" aria-label="Saiba mais sobre Horticultura">
+                <span class="ativ__media">
+                  <picture>
+                    <source type="image/webp" srcset="/img/horticultura-480.webp 480w, /img/horticultura-800.webp 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" />
+                    <img src="/img/horticultura-800.jpg" srcset="/img/horticultura-480.jpg 480w, /img/horticultura-800.jpg 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" width="800" height="800" alt="Duas crianças de uniforme sorriem segurando mudas de alface em vasinhos" loading="lazy" decoding="async" />
+                  </picture>
+                </span>
+                <span class="ativ__curtain" aria-hidden="true"></span>
+                <span class="ativ__expand" aria-hidden="true"><svg class="icon"><use href="#i-zoom-in" /></svg></span>
+                <span class="chip"><span class="chip__icon" aria-hidden="true"><svg class="icon"><use href="#i-sprout" /></svg></span>Horticultura</span>
+              </button>
+              <template class="ativ__detail">
+                <h3>Horticultura</h3>
+                <p>Plantar uma muda, regar todos os dias e acompanhar seu crescimento ensina responsabilidade, paciência e respeito pela natureza. Essa vivência prática aproxima os alunos do ciclo da vida e desperta desde cedo uma consciência ambiental que os acompanha por toda a vida.</p>
+              </template>
+            </li>
+            <!-- Musicalização: descrição em dois parágrafos; o card expandido
+                 copia todos os <p> do template. -->
+            <li class="ativ accent-verde">
+              <button class="ativ__btn" type="button" aria-haspopup="dialog" aria-controls="ativ-dialog" aria-label="Saiba mais sobre Musicalização">
+                <span class="ativ__media">
+                  <picture>
+                    <source type="image/webp" srcset="/img/musicalizacao-480.webp 480w, /img/musicalizacao-800.webp 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" />
+                    <img src="/img/musicalizacao-800.jpg" srcset="/img/musicalizacao-480.jpg 480w, /img/musicalizacao-800.jpg 800w" sizes="(min-width: 64em) 30vw, (min-width: 40em) 48vw, 100vw" width="800" height="800" alt="Professora sentada no chão com um ukulele, cercada por crianças em roda que seguram claves de madeira" loading="lazy" decoding="async" />
+                  </picture>
+                </span>
+                <span class="ativ__curtain" aria-hidden="true"></span>
+                <span class="ativ__expand" aria-hidden="true"><svg class="icon"><use href="#i-zoom-in" /></svg></span>
+                <span class="chip"><span class="chip__icon" aria-hidden="true"><svg class="icon"><use href="#i-music" /></svg></span>Musicalização</span>
+              </button>
+              <template class="ativ__detail">
+                <h3>Musicalização</h3>
+                <p>A Musicalização também faz parte da nossa proposta pedagógica! Por meio da música, as crianças desenvolvem a criatividade, a expressão, a percepção, a coordenação motora, a concentração e a sensibilidade.</p>
+                <p>Mais do que aprender música, nossos alunos vivenciam experiências que contribuem para seu desenvolvimento integral, de forma lúdica, afetiva e significativa.</p>
+              </template>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- {{#VESTIBULINHO}} -->
+      <!-- ===================== VESTIBULINHO ===================== -->
+      <!-- Período de inscrição, data/horário da prova, bolsa e link de inscrição
+           vêm de site.config.js → vestibulinho, pelos tokens VEST_*. As séries
+           com vaga estão direto neste HTML (lista .vagas). A inscrição é por um
+           formulário externo (VEST_FORM_URL): não há formulário no site. -->
+      <section class="section vestibulinho" id="vestibulinho" aria-labelledby="vestibulinho-title">
+        <span class="blob blob--rosa vestibulinho__blob vestibulinho__blob--1" aria-hidden="true"></span>
+        <span class="blob blob--verde blob--3 vestibulinho__blob vestibulinho__blob--2" aria-hidden="true"></span>
+
+        <div class="container">
+          <!-- ---------- Chamada + foto oficial ---------- -->
+          <div class="vestibulinho__intro">
+            <div class="vestibulinho__content">
+              <p class="eyebrow accent-rosa" data-aos="fade-up">
+                <svg class="icon" aria-hidden="true"><use href="#i-pencil" /></svg>
+                Uma oportunidade para começar uma nova história!
+              </p>
+              <h2 id="vestibulinho-title" data-aos="fade-up" data-aos-delay="60">
+                Vestibulinho Colégio Aquarela <em class="paint paint--rosa">2027</em>
+              </h2>
+              <!-- Parágrafo montado com os tokens VEST_* (datas, bolsa e horário) -->
+              <p class="lead vestibulinho__lead" data-aos="fade-up" data-aos-delay="120">
+                Inscrições de {{VEST_ENROLL_START}} a {{VEST_ENROLL_END}}, com vagas para o Ensino Fundamental I e II e o Ensino Médio e bolsas de estudo de {{VEST_SCHOLARSHIP}} de desconto. A prova é no dia {{VEST_DATE_LONG}}, às {{VEST_TIME}}.
+              </p>
+              <div class="vestibulinho__actions" data-aos="fade-up" data-aos-delay="180">
+                <!-- Inscrição: formulário externo (site.config.js → vestibulinho.formUrl), em nova aba -->
+                <a class="btn btn--rosa" href="{{VEST_FORM_URL}}" target="_blank" rel="noopener noreferrer">
+                  Fazer inscrição
+                  <svg class="icon icon--arrow" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+                </a>
+                <a class="btn btn--ghost btn--lg" href="{{WHATSAPP_VEST_URL}}" target="_blank" rel="noopener">
+                  <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+                  Dúvidas no WhatsApp
+                </a>
+              </div>
+              <p class="vestibulinho__note" data-aos="fade-up" data-aos-delay="220">
+                O formulário abre em uma nova aba. Se preferir, a inscrição também pode ser feita pelo WhatsApp.
+              </p>
+            </div>
+
+            <!-- Foto dos quatro alunos, recortada do banner do processo seletivo
+                 (scripts/optimize-images.mjs → processVestibulinho). Máscara
+                 orgânica e pincelada colorida atrás, como as outras fotos da página. -->
+            <div class="vestibulinho__media" data-aos="fade-left" data-aos-delay="120">
+              <div class="vestibulinho__frame">
+                <picture>
+                  <source type="image/webp" srcset="/img/vestibulinho-560.webp 560w, /img/vestibulinho-758.webp 758w" sizes="(min-width: 64em) 42vw, 100vw" />
+                  <img
+                    src="/img/vestibulinho-758.jpg"
+                    srcset="/img/vestibulinho-560.jpg 560w, /img/vestibulinho-758.jpg 758w"
+                    sizes="(min-width: 64em) 42vw, 100vw"
+                    width="758"
+                    height="758"
+                    alt="Quatro alunos do Colégio Aquarela, de uniforme e mochila, sorriem lado a lado; dois deles seguram livros didáticos"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+              </div>
+
+              <div class="vestibulinho__badge accent-laranja" data-aos="fade-up" data-aos-delay="320">
+                <p class="vestibulinho__badge-title">Bolsas de estudo</p>
+                <p class="vestibulinho__badge-value"><strong>{{VEST_SCHOLARSHIP}}</strong> de desconto</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ---------- Contador regressivo + inscrição ---------- -->
+          <div class="inscricao" id="inscricao">
+            <!-- Contador: os blocos que mudam a cada segundo ficam fora do leitor
+                 de tela (aria-hidden); o resumo acessível é atualizado a cada
+                 minuto, sem anúncio automático. Alvo em site.config.js → examDate. -->
+            <div class="countdown" data-aos="fade-up" data-countdown>
+              <span class="countdown__year" aria-hidden="true">2027</span>
+
+              <p class="countdown__label">Prova do {{VEST_NAME}}</p>
+              <div class="countdown__when">
+                <div class="countdown__when-item">
+                  <time class="countdown__big" datetime="{{VEST_DATETIME}}">{{VEST_DATE_SHORT}}</time>
+                  <span class="countdown__small">{{VEST_WEEKDAY}}</span>
+                </div>
+                <div class="countdown__when-item">
+                  <span class="countdown__big">{{VEST_TIME}}</span>
+                  <span class="countdown__small">horário</span>
+                </div>
+              </div>
+
+              <div class="countdown__timer">
+                <p class="countdown__label countdown__label--timer" data-countdown-label>Faltam</p>
+                <div class="countdown__grid" aria-hidden="true">
+                  <div class="countdown__tile accent-rosa">
+                    <span class="countdown__digits"><span class="countdown__num" data-unit="days">00</span></span>
+                    <span class="countdown__unit">dias</span>
+                  </div>
+                  <div class="countdown__tile accent-laranja">
+                    <span class="countdown__digits"><span class="countdown__num" data-unit="hours">00</span></span>
+                    <span class="countdown__unit">horas</span>
+                  </div>
+                  <div class="countdown__tile accent-verde">
+                    <span class="countdown__digits"><span class="countdown__num" data-unit="minutes">00</span></span>
+                    <span class="countdown__unit">min</span>
+                  </div>
+                  <div class="countdown__tile accent-rosa">
+                    <span class="countdown__digits"><span class="countdown__num" data-unit="seconds">00</span></span>
+                    <span class="countdown__unit">seg</span>
+                  </div>
+                </div>
+                <p class="visually-hidden" role="timer" data-countdown-summary>Contagem regressiva até a prova, em {{VEST_DATE_LONG}} às {{VEST_TIME}}.</p>
+              </div>
+
+              <ul class="countdown__facts" role="list">
+                <li class="accent-rosa">
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span>Inscrições de <strong><time datetime="{{VEST_ENROLL_START_DT}}">{{VEST_ENROLL_START}}</time></strong> a <strong><time datetime="{{VEST_ENROLL_END_DT}}">{{VEST_ENROLL_END}}</time></strong></span>
+                </li>
+                <li class="accent-laranja">
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span>Bolsas de estudo de <strong>{{VEST_SCHOLARSHIP}}</strong> de desconto</span>
+                </li>
+                <!-- Local da prova: o endereço da escola (site.config.js → address) -->
+                <li class="accent-verde">
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span>Prova na própria escola — {{ADDRESS}}</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Card de inscrição: séries com vagas + chamada de fechamento +
+                 botão para o formulário externo -->
+            <div class="inscricao__card" data-aos="fade-up" data-aos-delay="100">
+              <div class="inscricao__head">
+                <p class="eyebrow accent-verde">
+                  <svg class="icon" aria-hidden="true"><use href="#i-mortarboard" /></svg>
+                  Vagas para
+                </p>
+                <h3>Quem pode participar</h3>
+              </div>
+
+              <ul class="vagas" role="list">
+                <li class="vaga accent-rosa">
+                  <span class="vaga__icon" aria-hidden="true"><svg class="icon"><use href="#i-book" /></svg></span>
+                  <div>
+                    <strong>1º e 2º ano</strong>
+                    <p>Ensino Fundamental I</p>
+                  </div>
+                </li>
+                <li class="vaga accent-laranja">
+                  <span class="vaga__icon" aria-hidden="true"><svg class="icon"><use href="#i-people" /></svg></span>
+                  <div>
+                    <strong>6º e 7º ano</strong>
+                    <p>Ensino Fundamental II</p>
+                  </div>
+                </li>
+                <li class="vaga accent-verde">
+                  <span class="vaga__icon" aria-hidden="true"><svg class="icon"><use href="#i-mortarboard" /></svg></span>
+                  <div>
+                    <strong>1ª e 2ª série</strong>
+                    <p>Ensino Médio</p>
+                  </div>
+                </li>
+              </ul>
+
+              <div class="inscricao__cta">
+                <p class="inscricao__call">
+                  Venha conhecer o Colégio Aquarela, onde plantamos conhecimento e cultivamos futuro! Não fique de fora! Garanta sua inscrição e venha fazer parte da Família Aquarela!
+                </p>
+                <!-- Inscrição: formulário externo, em nova aba -->
+                <a class="btn btn--rosa inscricao__btn" href="{{VEST_FORM_URL}}" target="_blank" rel="noopener noreferrer">
+                  Fazer minha inscrição
+                  <svg class="icon icon--arrow" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+                </a>
+                <p class="inscricao__hint">
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span>Inscrições de <strong>{{VEST_ENROLL_START}}</strong> a <strong>{{VEST_ENROLL_END}}</strong>, pelo formulário online da escola (abre em uma nova aba). Leva poucos minutos.</span>
+                </p>
+              </div>
+
+              <div class="inscricao__alt">
+                <p class="inscricao__alt-title">Prefere se inscrever pelo WhatsApp?</p>
+                <p>A secretaria também faz a inscrição e tira dúvidas pelo WhatsApp.</p>
+                <div class="inscricao__alt-actions">
+                  <a class="btn btn--sm" href="{{WHATSAPP_VEST_URL}}" target="_blank" rel="noopener">
+                    <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+                    Falar no WhatsApp
+                  </a>
+                  <a href="{{PHONE_HREF}}">
+                    <svg class="icon" aria-hidden="true"><use href="#i-phone" /></svg>
+                    {{PHONE}}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- {{/VESTIBULINHO}} -->
+
+      <!-- ===================== ESPAÇOS ===================== -->
+      <!-- Playground e Quadra Coberta no padrão dos segmentos (foto 1000×750 +
+           título + texto); Ensino Integral e Semi-Integral é programa/horário, não
+           espaço físico: vai sem foto, no padrão dos diferenciais (ícone + título
+           + texto). Fotos em content/fotos/espaco-*.jpg (`npm run images`). -->
+      <section class="section espacos" id="espacos" aria-labelledby="espacos-title">
+        <div class="container">
+          <header class="section-head section-head--center" data-aos="fade-up">
+            <span class="dabs" aria-hidden="true"><span></span><span></span><span></span></span>
+            <h2 id="espacos-title">Espaços para brincar, aprender e se <em class="paint paint--laranja">desenvolver</em></h2>
+            <p>No Colégio Aquarela, acreditamos que cada momento da criança é uma oportunidade de aprender, brincar e desenvolver novas habilidades.</p>
+          </header>
+
+          <div class="espacos__list">
+            <!-- Playground -->
+            <article class="espaco accent-rosa" id="playground">
+              <div class="espaco__media" data-aos="fade-right">
+                <div class="espaco__frame">
+                  <picture>
+                    <source type="image/webp" srcset="/img/espaco-playground-600.webp 600w, /img/espaco-playground-800.webp 800w, /img/espaco-playground-1000.webp 1000w" sizes="(min-width: 64em) 46vw, 100vw" />
+                    <img
+                      src="/img/espaco-playground-1000.jpg"
+                      srcset="/img/espaco-playground-600.jpg 600w, /img/espaco-playground-800.jpg 800w, /img/espaco-playground-1000.jpg 1000w"
+                      sizes="(min-width: 64em) 46vw, 100vw"
+                      width="1000"
+                      height="750"
+                      alt="Quatro crianças de uniforme sentadas no gira-gira do playground, com o brinquedão colorido e o escorregador ao fundo"
+                      loading="lazy"
+                      decoding="async"
+                      data-parallax
+                    />
+                  </picture>
+                </div>
+              </div>
+              <div class="espaco__body" data-aos="fade-up">
+                <span class="espaco__icon" aria-hidden="true"><svg class="icon"><use href="#i-slide" /></svg></span>
+                <h3>Playground</h3>
+                <p class="espaco__text">
+                  Um espaço pensado para proporcionar momentos de diversão, movimento e interação, contribuindo para o desenvolvimento da autonomia, criatividade e socialização das crianças.
+                </p>
+              </div>
+            </article>
+
+            <!-- Ensino Integral e Semi-Integral (programa/horário, sem foto) -->
+            <article class="espaco-card accent-laranja" id="integral" data-aos="fade-up">
+              <span class="espaco-card__icon" aria-hidden="true"><svg class="icon"><use href="#i-clock" /></svg></span>
+              <div>
+                <h3>Ensino Integral e Semi-Integral</h3>
+                <p>
+                  Oferecemos opções de Ensino Integral e Semi-Integral, com flexibilidade de horários para atender às necessidades de cada família e proporcionar uma rotina segura, acolhedora e enriquecedora.
+                </p>
+              </div>
+            </article>
+
+            <!-- Quadra Coberta -->
+            <article class="espaco espaco--reverse accent-verde" id="quadra-coberta">
+              <div class="espaco__media" data-aos="fade-left">
+                <div class="espaco__frame">
+                  <picture>
+                    <source type="image/webp" srcset="/img/espaco-quadra-coberta-600.webp 600w, /img/espaco-quadra-coberta-800.webp 800w, /img/espaco-quadra-coberta-1000.webp 1000w" sizes="(min-width: 64em) 46vw, 100vw" />
+                    <img
+                      src="/img/espaco-quadra-coberta-1000.jpg"
+                      srcset="/img/espaco-quadra-coberta-600.jpg 600w, /img/espaco-quadra-coberta-800.jpg 800w, /img/espaco-quadra-coberta-1000.jpg 1000w"
+                      sizes="(min-width: 64em) 46vw, 100vw"
+                      width="1000"
+                      height="750"
+                      alt="Turma de alunos de uniforme posa com a professora em frente ao gol da quadra da escola"
+                      loading="lazy"
+                      decoding="async"
+                      data-parallax
+                    />
+                  </picture>
+                </div>
+              </div>
+              <div class="espaco__body" data-aos="fade-up">
+                <span class="espaco__icon" aria-hidden="true"><svg class="icon"><use href="#i-ball" /></svg></span>
+                <h3>Quadra Coberta</h3>
+                <p class="espaco__text">
+                  Nossa quadra coberta proporciona um ambiente adequado para atividades esportivas, recreativas e momentos de integração, permitindo que os alunos aproveitem as atividades com segurança em diferentes condições climáticas.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <!-- Fechamento (o 💙 do texto original vira o ícone de coração) -->
+          <div class="espacos__closing accent-rosa" data-aos="zoom-in">
+            <span class="espacos__closing-icon" aria-hidden="true"><svg class="icon"><use href="#i-heart" /></svg></span>
+            <p class="espacos__closing-title">Um espaço pensado para cuidar, ensinar e acolher.</p>
+            <p>No Colégio Aquarela, unimos educação, cuidado e experiências que contribuem para o desenvolvimento integral de cada aluno.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== UMA EDUCAÇÃO PARA A VIDA + CTA ===================== -->
+      <section class="cta on-dark" id="visita" aria-labelledby="cta-title">
+        <picture class="cta__bg">
+          <source type="image/webp" srcset="/img/cta-final-768.webp 768w, /img/cta-final-1280.webp 1280w, /img/cta-final-1920.webp 1920w" sizes="100vw" />
+          <img
+            src="/img/cta-final-1280.jpg"
+            srcset="/img/cta-final-768.jpg 768w, /img/cta-final-1280.jpg 1280w, /img/cta-final-1920.jpg 1920w"
+            sizes="100vw"
+            width="1920"
+            height="1080"
+            alt="Grande grupo de alunos de uniforme reunido na entrada da escola, sorrindo para a foto"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+        <div class="cta__overlay" aria-hidden="true"></div>
+
+        <div class="container cta__inner">
+          <span class="dabs" aria-hidden="true" data-aos="fade-up"><span></span><span></span><span></span></span>
+          <h2 id="cta-title" data-aos="fade-up">Uma educação para a <em class="paint paint--verde">vida</em></h2>
+
+          <div class="cta__text" data-aos="fade-up" data-aos-delay="80">
+            <p>No Colégio Aquarela, acreditamos que educar é muito mais do que transmitir conhecimento.</p>
+            <p>É acolher, ensinar, incentivar, descobrir talentos e cultivar valores.</p>
+            <p>Do Berçário ao Ensino Médio, cuidamos de cada etapa para construir um futuro de possibilidades.</p>
+          </div>
+
+          <p class="pill pill--dark" data-aos="fade-up" data-aos-delay="120">
+            <svg class="icon" aria-hidden="true"><use href="#i-pin" /></svg>
+            {{ADDRESS}}
+          </p>
+
+          <div class="cta__card" data-aos="zoom-in" data-aos-delay="160">
+            <!-- A mesma dupla da logo mascote, pequena, ecoando os recortes dos
+                 personagens ao lado do letreiro na fachada (hero.jpg). Decorativa. -->
+            <picture class="cta__mascote" aria-hidden="true">
+              <source type="image/webp" srcset="/logos/mascote/personagens-200.webp 1x, /logos/mascote/personagens-400.webp 2x" />
+              <img src="/logos/mascote/personagens-200.png" srcset="/logos/mascote/personagens-400.png 2x" width="200" height="99" alt="" loading="lazy" decoding="async" />
+            </picture>
+            <p class="cta__call">Venha conhecer o Colégio Aquarela!</p>
+            <p class="cta__hand">Agende uma visita e faça parte da nossa história.</p>
+            <a class="btn btn--white btn--lg" href="{{WHATSAPP_URL}}" target="_blank" rel="noopener">
+              <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+              Agende uma visita
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===================== RODAPÉ ===================== -->
+    <footer class="site-footer" id="contato" aria-labelledby="contato-title">
+      <div class="brush-divider brush-divider--top" aria-hidden="true">
+        <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+          <path fill="#F7F8FC" opacity=".45" d="M0 90V66c150-16 260 14 420-6 180-22 340 0 480-12 160-14 300 22 540-2v44Z" />
+          <path fill="#F7F8FC" d="M0 90V55c90-15 180 15 300-3 120-18 220-30 360-12s240-10 380-4 250 30 400 8v46Z" />
+        </svg>
+      </div>
+
+      <div class="container">
+        <h2 id="contato-title" class="visually-hidden">Contato</h2>
+
+        <div class="site-footer__grid">
+          <div class="site-footer__brand">
+            <a href="#inicio" aria-label="{{NAME}} — voltar ao início">
+              <picture>
+                <source type="image/webp" srcset="/logos/{{LOGO}}/logo-200.webp 200w, /logos/{{LOGO}}/logo-400.webp 400w" sizes="130px" />
+                <img src="/logos/{{LOGO}}/logo-400.png" width="{{LOGO_W}}" height="{{LOGO_H}}" alt="{{NAME}}" loading="lazy" decoding="async" />
+              </picture>
+            </a>
+            <p class="site-footer__tagline">Plantamos conhecimento e cultivamos futuro.</p>
+          </div>
+
+          <div class="site-footer__col accent-rosa">
+            <h3>Endereço</h3>
+            <p><svg class="icon" aria-hidden="true"><use href="#i-pin" /></svg><span>{{ADDRESS}}</span></p>
+            <a href="{{MAPS_URL}}" target="_blank" rel="noopener">
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right" /></svg><span>Ver no mapa</span>
+            </a>
+          </div>
+
+          <div class="site-footer__col accent-laranja">
+            <h3>Contato</h3>
+            <a href="{{PHONE_HREF}}">
+              <svg class="icon" aria-hidden="true"><use href="#i-phone" /></svg><span>{{PHONE}}</span>
+            </a>
+            <a class="btn btn--verde" href="{{WHATSAPP_URL}}" target="_blank" rel="noopener">
+              <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+              WhatsApp
+            </a>
+          </div>
+
+          <div class="site-footer__col accent-verde">
+            <h3>Redes sociais</h3>
+            <ul class="social" role="list">
+              <li>
+                <a href="{{INSTAGRAM}}" target="_blank" rel="noopener" aria-label="Instagram do {{NAME}}">
+                  <svg class="icon" aria-hidden="true"><use href="#i-instagram" /></svg>
+                </a>
+              </li>
+              <li>
+                <a href="{{FACEBOOK}}" target="_blank" rel="noopener" aria-label="Facebook do {{NAME}}">
+                  <svg class="icon" aria-hidden="true"><use href="#i-facebook" /></svg>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="site-footer__bottom">
+          <div class="site-footer__legal">
+            <p>© {{YEAR}} {{NAME}}</p>
+            <!-- Crédito de desenvolvimento: menor e em tom mais suave que o resto
+                 do rodapé, de propósito — dá crédito sem competir com a marca da
+                 escola. O link é o do desenvolvedor (site.config.js → developer),
+                 o único lugar do site que não usa o número da escola. -->
+            <p class="site-footer__credit">
+              <a href="{{DEV_WHATSAPP_URL}}" target="_blank" rel="noopener">Desenvolvido por {{DEV_NAME}}</a>
+            </p>
+          </div>
+          <nav aria-label="Rodapé">
+            <a href="#segmentos">Segmentos</a>
+            <a href="#diferenciais">Diferenciais</a>
+            <a href="#atividades">Atividades</a>
+            <!-- {{#VESTIBULINHO}} -->
+            <a href="#vestibulinho">Vestibulinho</a>
+            <!-- {{/VESTIBULINHO}} -->
+            <a href="#visita">Agende uma visita</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Card expandido das Atividades Extras (preenchido por JS a partir dos <template> de cada card) -->
+    <div class="ativ-dialog" id="ativ-dialog" role="dialog" aria-modal="true" aria-labelledby="ativ-dialog-title" hidden>
+      <div class="ativ-dialog__backdrop" data-dialog-close></div>
+      <div class="ativ-dialog__panel">
+        <div class="ativ-dialog__surface" aria-hidden="true"></div>
+        <button class="ativ-dialog__close" type="button" aria-label="Fechar" data-dialog-close>
+          <svg class="icon" aria-hidden="true"><use href="#i-close" /></svg>
+        </button>
+        <div class="ativ-dialog__media"></div>
+        <div class="ativ-dialog__body">
+          <span class="ativ-dialog__icon" aria-hidden="true"><svg class="icon"><use href="#i-palette" /></svg></span>
+          <h3 class="ativ-dialog__title" id="ativ-dialog-title"></h3>
+          <!-- div (e não p): recebe um ou mais <p> copiados do template do card -->
+          <div class="ativ-dialog__text"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botão flutuante de WhatsApp -->
+    <a class="wa-fab" href="{{WHATSAPP_URL}}" target="_blank" rel="noopener" aria-label="Falar com o {{NAME}} pelo WhatsApp">
+      <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+    </a>
+
+    <!-- Site desenvolvido por Pedro Ross em 2026 -->
+  </body>
+</html>

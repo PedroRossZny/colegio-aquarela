@@ -1,0 +1,88 @@
+@use 'sass:map';
+@use 'tokens' as t;
+
+@mixin bp($name) {
+  @media (min-width: map.get(t.$bp, $name)) {
+    @content;
+  }
+}
+
+@mixin bp-down($name) {
+  @media (max-width: calc(#{map.get(t.$bp, $name)} - 0.02em)) {
+    @content;
+  }
+}
+
+@mixin container($max: t.$container) {
+  width: min(100% - 2 * var(--gutter), $max);
+  margin-inline: auto;
+}
+
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Forma orgânica "mancha de aquarela" — usada nas fotos e nos blobs.
+// A 4 tem os cantos de cima mais fechados: é a da foto do Vestibulinho, em que
+// as cabeças dos alunos encostam nos dois cantos superiores do recorte.
+@mixin blob($variant: 1) {
+  @if $variant == 1 {
+    border-radius: 58% 42% 55% 45% / 45% 52% 48% 55%;
+  } @else if $variant == 2 {
+    border-radius: 44% 56% 48% 52% / 56% 44% 56% 44%;
+  } @else if $variant == 4 {
+    border-radius: 26% 74% 60% 40% / 34% 42% 58% 66%;
+  } @else {
+    border-radius: 52% 48% 42% 58% / 48% 58% 42% 52%;
+  }
+}
+
+// Mancha de aquarela suave no fundo de uma seção (pseudo-elemento).
+@mixin wash($c1, $c2, $c3: transparent) {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(42rem 30rem at 8% 12%, color-mix(in srgb, #{$c1} 16%, transparent), transparent 70%),
+    radial-gradient(38rem 28rem at 92% 22%, color-mix(in srgb, #{$c2} 14%, transparent), transparent 70%),
+    radial-gradient(30rem 22rem at 70% 96%, color-mix(in srgb, #{$c3} 14%, transparent), transparent 70%);
+}
+
+// Hover unificado do site (botões, ícones sociais, FAB): leve deslocamento
+// para cima e/ou escala, com sombra — sempre a mesma duração e curva.
+// Usa `translate`/`scale` (propriedades individuais) em vez de `transform`,
+// para compor com o `transform` inline que o GSAP deixa nos elementos animados
+// (era por isso que o botão do hero não subia no hover).
+$hover-duration: 0.3s;
+
+@mixin hover-lift($lift: -2px, $scale: 1, $shadow: var(--shadow-md)) {
+  transition:
+    translate $hover-duration var(--ease-out),
+    scale $hover-duration var(--ease-out),
+    box-shadow $hover-duration var(--ease-out),
+    background-color $hover-duration var(--ease-out),
+    color $hover-duration var(--ease-out),
+    border-color $hover-duration var(--ease-out);
+
+  &:hover,
+  &:focus-visible {
+    translate: 0 $lift;
+    scale: $scale;
+    box-shadow: $shadow;
+  }
+
+  &:active {
+    translate: 0 0;
+    scale: 1;
+  }
+}

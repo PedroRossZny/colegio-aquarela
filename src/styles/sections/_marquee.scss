@@ -1,0 +1,42 @@
+// Faixa decorativa com os nomes dos segmentos (aria-hidden).
+.marquee {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  background: var(--c-navy);
+  color: var(--c-white);
+  width: 104%;
+  margin-inline: -2%;
+  transform: rotate(-1.5deg);
+  margin-block: -1.25rem 0.5rem;
+  padding-block: 0.9rem;
+
+  &__track {
+    display: flex;
+    align-items: center;
+    gap: 2.25rem;
+    width: max-content;
+    padding-inline: 1.125rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1rem, 0.9rem + 0.6vw, 1.25rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: marquee 32s linear infinite;
+    }
+  }
+
+  .dot {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}

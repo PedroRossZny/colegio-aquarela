@@ -1,0 +1,25 @@
+// Colégio Aquarela — folha principal (Sass customizado)
+@use "base/root";
+@use "base/reset";
+@use "base/typography";
+@use "base/utilities";
+
+@use "components/buttons";
+@use "components/pill";
+@use "components/dividers";
+@use "components/header";
+@use "components/whatsapp-fab";
+
+@use "sections/hero";
+@use "sections/marquee";
+@use "sections/segmentos";
+@use "sections/positivo";
+@use "sections/diferenciais";
+@use "sections/atividades";
+// Estilos do Vestibulinho: o bloco sai do build com vestibulinho.enabled: false (ver vite.config.js)
+// {{#VESTIBULINHO}}
+@use "sections/vestibulinho";
+// {{/VESTIBULINHO}}
+@use "sections/espacos";
+@use "sections/cta";
+@use "sections/footer";

@@ -1,0 +1,85 @@
+@use "../abstracts/mixins" as *;
+
+.container {
+  @include container;
+}
+
+.visually-hidden {
+  @include visually-hidden;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1000;
+  padding: 0.75rem 1.25rem;
+  background: var(--c-navy);
+  color: var(--c-white);
+  font-weight: 700;
+  border-radius: var(--r-sm);
+  transform: translateY(-200%);
+  transition: transform 0.2s var(--ease-out);
+
+  &:focus {
+    transform: translateY(0);
+  }
+}
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  flex: none;
+  vertical-align: -0.125em;
+}
+
+// Hover padrão do site (ver mixin hover-lift): botões, ícones, cards clicáveis.
+.hover-lift {
+  @include hover-lift;
+}
+
+.section {
+  position: relative;
+  padding-block: var(--section);
+}
+
+.section--claro {
+  background: var(--c-claro);
+}
+
+// Acento por elemento: define --accent + tinta. Alternado por seção/bloco.
+.accent-rosa {
+  --accent: var(--c-rosa);
+  --accent-deep: var(--c-rosa-deep);
+  --accent-tint: var(--c-rosa-tint);
+}
+
+.accent-laranja {
+  --accent: var(--c-laranja);
+  --accent-deep: var(--c-laranja-deep);
+  --accent-tint: var(--c-laranja-tint);
+}
+
+.accent-verde {
+  --accent: var(--c-verde);
+  --accent-deep: var(--c-verde-deep);
+  --accent-tint: var(--c-verde-tint);
+}
+
+// Blobs decorativos (manchas de aquarela desfocadas)
+.blob {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+  filter: blur(28px);
+  @include blob(1);
+
+  &--rosa { background: color-mix(in srgb, var(--c-rosa) 28%, transparent); }
+  &--laranja { background: color-mix(in srgb, var(--c-laranja) 30%, transparent); }
+  &--verde { background: color-mix(in srgb, var(--c-verde) 26%, transparent); }
+  &--2 { @include blob(2); }
+  &--3 { @include blob(3); }
+}

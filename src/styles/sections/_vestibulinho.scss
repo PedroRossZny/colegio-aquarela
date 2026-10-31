@@ -1,0 +1,617 @@
+@use "../abstracts/mixins" as *;
+
+// Vestibulinho — chamada + foto oficial em cima, painel com o contador
+// regressivo e o card de inscrição (botão para o Google Forms da escola)
+// embaixo. Fundo branco: fica entre o claro das Atividades e o navy do CTA final.
+.vestibulinho {
+  background: var(--c-white);
+  overflow: clip;
+
+  &__blob {
+    &--1 { width: 30rem; height: 26rem; top: -10rem; right: -12rem; opacity: 0.38; }
+    &--2 { width: 22rem; height: 20rem; left: -11rem; top: 42%; opacity: 0.32; }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  // ---- Chamada + foto ----
+  &__intro {
+    display: grid;
+    gap: clamp(3rem, 5vw, 4.5rem);
+    align-items: center;
+    margin-bottom: clamp(3.5rem, 3rem + 4vw, 6.5rem);
+
+    // texto um pouco mais largo que a foto: o par de botões (inscrição +
+    // WhatsApp) fica lado a lado a partir de ~1200px
+    @include bp(lg) {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      gap: clamp(2.5rem, 4vw, 4rem);
+    }
+  }
+
+  &__content {
+    max-width: 40rem;
+
+    .eyebrow {
+      margin-bottom: 0.75rem;
+    }
+
+    h2 {
+      margin-bottom: 1.25rem;
+    }
+  }
+
+  &__lead {
+    margin-bottom: 1.75rem;
+    color: var(--c-escuro);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem 1rem;
+  }
+
+  &__note {
+    margin-top: 1rem;
+    max-width: 32rem;
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: var(--c-muted);
+  }
+
+  // ---- Foto oficial (os quatro alunos) — mesmo tratamento do hero: máscara
+  // orgânica, sombra, pincelada colorida atrás e um card flutuante ----
+  &__media {
+    position: relative;
+    width: 100%;
+    max-width: 30rem;
+    margin-inline: auto;
+
+    @include bp(lg) {
+      max-width: none;
+    }
+  }
+
+  // pincelada colorida atrás da foto
+  &__media::before {
+    content: "";
+    position: absolute;
+    inset: 7% -5% -6% 8%;
+    z-index: 0;
+    @include blob(2);
+    background: linear-gradient(135deg, var(--c-rosa-tint), color-mix(in srgb, var(--c-laranja) 22%, white));
+    transform: rotate(6deg);
+  }
+
+  &__media::after {
+    content: "";
+    position: absolute;
+    width: 24%;
+    aspect-ratio: 1;
+    left: -5%;
+    top: -4%;
+    z-index: 0;
+    @include blob(3);
+    background: color-mix(in srgb, var(--c-verde) 18%, white);
+  }
+
+  // Recorte quadrado alinhado ao topo (a foto já vem cortada assim); a forma 4
+  // fecha menos os cantos de cima, onde estão as cabeças do primeiro e do
+  // último aluno.
+  &__frame {
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 1;
+    @include blob(4);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    background: var(--c-navy-tint);
+
+    picture,
+    img {
+      width: 100%;
+      height: 100%;
+    }
+
+    img {
+      object-fit: cover;
+      object-position: 50% 0;
+    }
+  }
+
+  // Card flutuante "Bolsas de estudo" (valor de site.config.js → vestibulinho.scholarship)
+  &__badge {
+    position: relative;
+    z-index: 2;
+    width: max-content;
+    max-width: calc(100% - 2rem);
+    margin: -2.25rem auto 0;
+    padding: 1rem 1.35rem 1.05rem;
+    background: var(--c-white);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+
+    // pingo de tinta laranja no canto (o card é branco: a cor entra só como enfeite)
+    &::before {
+      content: "";
+      position: absolute;
+      top: -0.55rem;
+      right: 1.1rem;
+      width: 1.1rem;
+      height: 1.1rem;
+      @include blob(2);
+      background: var(--accent);
+    }
+
+    @include bp(sm) {
+      position: absolute;
+      left: -1rem;
+      bottom: 1.5rem;
+      margin: 0;
+      max-width: 17rem;
+      text-align: left;
+    }
+
+    @include bp(lg) {
+      left: -2rem;
+      bottom: 2.25rem;
+    }
+  }
+
+  &__badge-title {
+    margin-bottom: 0.1rem;
+    font-family: var(--font-hand);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--c-navy);
+  }
+
+  &__badge-value {
+    font-size: var(--fs-small);
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--c-escuro);
+
+    // "até 50%" grande, em rosa-escuro (5,6:1 sobre branco)
+    strong {
+      display: block;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2rem, 1.6rem + 1.4vw, 2.6rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--c-rosa-deep);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Contador regressivo — card navy com mancha de aquarela, data/horário grandes,
+// quatro blocos (dias/horas/min/seg) com um pingo de tinta em cima de cada um
+// e a lista com os dados principais da prova.
+// ---------------------------------------------------------------------------
+.countdown {
+  position: relative;
+  padding: clamp(1.5rem, 1.25rem + 1.5vw, 2.5rem);
+  color: var(--c-white);
+  background: var(--c-navy);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: clip;
+  isolation: isolate;
+
+  &::before {
+    @include wash(var(--c-rosa), var(--c-verde), var(--c-laranja));
+    opacity: 0.9;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  // "2027" gigante, quase transparente, no canto de cima
+  &__year {
+    position: absolute;
+    z-index: 0;
+    right: -0.12em;
+    top: -0.28em;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(6rem, 5rem + 5vw, 9.5rem);
+    line-height: 1;
+    letter-spacing: -0.06em;
+    color: var(--c-white);
+    opacity: 0.06;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__label {
+    margin-bottom: 0.85rem;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  // data + horário
+  &__when {
+    display: flex;
+    align-items: stretch;
+    gap: 1.5rem;
+  }
+
+  &__when-item {
+    display: grid;
+    gap: 0.15rem;
+    align-content: start;
+
+    & + & {
+      padding-left: 1.5rem;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  &__big {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.5rem, 2rem + 2.2vw, 3.6rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    color: var(--c-white);
+  }
+
+  &__small {
+    font-size: var(--fs-small);
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  // ---- os quatro blocos ----
+  &__timer {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  &__label--timer {
+    margin-bottom: 1.1rem; // espaço para o pingo de tinta em cima dos blocos
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.6rem;
+
+    @include bp(sm) {
+      gap: 0.85rem;
+    }
+  }
+
+  &__tile {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 0.25rem;
+    padding: 1rem 0.25rem 0.8rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--r-md);
+
+    // pingo de tinta na cor de acento (rosa/laranja/verde) em cima do bloco
+    &::before {
+      content: "";
+      position: absolute;
+      top: -0.45rem;
+      left: 50%;
+      width: 0.95rem;
+      height: 0.95rem;
+      translate: -50% 0;
+      @include blob(1);
+      background: var(--accent);
+    }
+
+    &:nth-child(2)::before { @include blob(2); }
+    &:nth-child(3)::before { @include blob(3); }
+  }
+
+  // Máscara da troca: o número que sai e o que entra ficam empilhados na mesma
+  // célula do grid (ver countdown.js) e rolam juntos, um para cima do bloco e
+  // outro vindo de baixo. Por isso o overflow: hidden.
+  &__digits {
+    display: grid;
+    overflow: hidden;
+
+    // A tipografia fica aqui, e não só no número: `ch` precisa ser medido na
+    // fonte de exibição, e os dois dígitos empilhados herdam daqui.
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+
+    // Largura para o par de dígitos mais largo, com folga lateral: com
+    // tabular-nums os dois ocupam 2ch de avanço, mas no peso 800 o desenho
+    // passa um pouco da caixa e o letter-spacing negativo come o espaço depois
+    // do último dígito — sem isso o overflow: hidden cortava o traço da direita.
+    min-width: 2.4ch;
+    padding-inline: 0.1em;
+    // a folga do min-width sobraria toda à direita (o bloco é mais largo que o
+    // texto): centralizado, ela vira respiro dos dois lados
+    text-align: center;
+
+    > * {
+      grid-area: 1 / 1;
+    }
+  }
+
+  &__num {
+    display: block;
+    color: var(--c-white);
+    will-change: transform;
+  }
+
+  &__unit {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  // prova já aconteceu: blocos zerados e apagados
+  &.is-over &__grid {
+    opacity: 0.45;
+  }
+
+  // ---- dados principais ----
+  &__facts {
+    display: grid;
+    gap: 0.65rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.88);
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+    }
+
+    // check NAVY sobre o círculo de acento (regra de contraste do site:
+    // laranja nunca recebe branco; navy passa nas três cores)
+    .icon {
+      flex: none;
+      width: 1.3rem;
+      height: 1.3rem;
+      margin-top: 0.1em;
+      padding: 0.22rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--c-navy);
+    }
+
+    strong {
+      color: var(--c-white);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Painel de inscrição — fundo claro com mancha: contador (navy) à esquerda e o
+// card branco de inscrição (séries, chamada e botão para o Google Forms) à direita.
+// ---------------------------------------------------------------------------
+.inscricao {
+  position: relative;
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  padding: clamp(1.25rem, 0.75rem + 2.5vw, 3.5rem);
+  background: var(--c-claro);
+  border: 1px solid var(--c-line);
+  border-radius: calc(var(--r-lg) * 1.25);
+  overflow: clip;
+
+  &::before {
+    @include wash(var(--c-verde), var(--c-rosa), var(--c-laranja));
+    opacity: 0.85;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  @include bp(lg) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: start;
+
+    // o contador acompanha o card de inscrição enquanto ele rola
+    // (overflow: clip do painel não quebra o sticky)
+    .countdown {
+      position: sticky;
+      top: calc(var(--header-h-compact) + 2rem);
+    }
+  }
+
+  // ---- card de inscrição ----
+  &__card {
+    padding: clamp(1.5rem, 1.25rem + 1.5vw, 2.75rem);
+    background: var(--c-white);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  &__head {
+    margin-bottom: 1.5rem;
+
+    .eyebrow {
+      margin-bottom: 0.35rem;
+    }
+
+    h3 {
+      font-size: var(--fs-h3);
+    }
+  }
+
+  // chamada de fechamento (verbatim) + botão + observação
+  &__cta {
+    display: grid;
+    gap: 1.1rem;
+    margin-top: 1.75rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--c-line);
+  }
+
+  &__call {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--c-navy);
+  }
+
+  &__btn {
+    width: 100%;
+
+    @include bp(sm) {
+      width: auto;
+      min-width: 17rem;
+      justify-self: start;
+    }
+  }
+
+  &__hint {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--c-muted);
+
+    .icon {
+      flex: none;
+      width: 1.3rem;
+      height: 1.3rem;
+      margin-top: 0.05em;
+      padding: 0.22rem;
+      border-radius: 50%;
+      background: var(--c-verde);
+      color: var(--c-white);
+    }
+
+    strong {
+      color: var(--c-navy);
+    }
+  }
+
+  // caixinha "prefere se inscrever pelo WhatsApp?"
+  &__alt {
+    margin-top: 1.5rem;
+    padding: 1.25rem 1.4rem;
+    background: var(--c-claro);
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-md);
+
+    p:not(.inscricao__alt-title) {
+      font-size: var(--fs-small);
+      color: var(--c-escuro);
+    }
+  }
+
+  &__alt-title {
+    margin-bottom: 0.35rem;
+    font-family: var(--font-hand);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--c-navy);
+  }
+
+  &__alt-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    margin-top: 1rem;
+
+    a:not(.btn) {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 700;
+      color: var(--c-navy);
+      transition: color 0.2s;
+
+      .icon {
+        color: var(--c-laranja);
+      }
+
+      &:hover {
+        color: var(--c-rosa-deep);
+      }
+    }
+  }
+}
+
+// Séries com vagas — ícone em forma de mancha, como os nós da jornada dos segmentos
+.vagas {
+  display: grid;
+  gap: 1rem;
+}
+
+.vaga {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    @include blob(1);
+    background: var(--accent);
+    color: var(--c-navy);
+    box-shadow: var(--shadow-sm);
+
+    .icon {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+
+  &:nth-child(2) &__icon { @include blob(2); }
+  &:nth-child(3) &__icon { @include blob(3); }
+
+  strong {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    color: var(--c-navy);
+  }
+
+  p {
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: var(--c-escuro);
+  }
+}

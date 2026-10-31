@@ -1,0 +1,406 @@
+@use "../abstracts/mixins" as *;
+
+// Atividades Extras — grid de fotos.
+.atividades {
+  background: var(--c-claro);
+  overflow: clip;
+
+  &::before {
+    @include wash(var(--c-verde), var(--c-rosa), var(--c-laranja));
+    opacity: 0.7;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  // Flex (e não grid) para a última linha incompleta ficar centralizada, seja
+  // qual for o número de atividades — com as 7 de hoje: 3 + 3 + 1 no desktop e
+  // 2 + 2 + 2 + 1 no tablet. Uma atividade nova entra sem mexer no CSS. Os cards
+  // têm a mesma largura em todas as linhas (flex-basis fixo).
+  //
+  // Não passa de 3 por linha de propósito: com 4, o card cai para ~275px e o chip
+  // "Cozinha Experimental" ocupa quase toda a largura — no hover ele cobre o
+  // ícone de expandir (canto inferior direito). Com 3, o card tem ~376px e folga.
+  &__grid {
+    --cols: 1;
+    --gap: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--gap);
+
+    @include bp(sm) {
+      --cols: 2;
+    }
+
+    @include bp(lg) {
+      --cols: 3;
+      --gap: 1.75rem;
+    }
+
+    > * {
+      flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+    }
+  }
+}
+
+.ativ {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--accent-tint);
+  box-shadow: var(--shadow-md);
+  isolation: isolate;
+
+  @include bp(sm) {
+    aspect-ratio: 1;
+  }
+
+  // Botão que abre o card expandido — ocupa o card inteiro, sem aparência própria
+  &__btn {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: inherit;
+    text-align: left;
+    color: inherit;
+
+    // fallback (navegadores sem :has): anel interno
+    &:focus-visible {
+      outline: 3px solid var(--c-rosa);
+      outline-offset: -4px;
+      border-radius: inherit;
+    }
+  }
+
+  // ---- Camadas (irmãs dentro do botão) ----
+  // 1) wrapper da imagem: recebe o zoom e o recorta; só ele tem transform
+  &__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    border-radius: inherit;
+
+    picture,
+    img {
+      width: 100%;
+      height: 100%;
+    }
+
+    picture {
+      border-radius: inherit;
+      overflow: hidden;
+    }
+
+    img {
+      object-fit: cover;
+      transition: transform 0.7s var(--ease-out);
+    }
+  }
+
+  // 2) cortina: gradiente na cor da atividade, ~38% da altura, colada embaixo.
+  //    Escondida abaixo do card; sobe no hover/foco.
+  &__curtain {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 48%; // o botão de expandir fica dentro da área colorida
+    z-index: 1;
+    // gradiente (não repeating-) sem ladrilhar: no-repeat + tamanho fixo
+    background-image: linear-gradient(to top, var(--accent) 0%, transparent 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    transform: translateY(100%);
+    transition: transform 0.32s var(--ease-out);
+    pointer-events: none;
+    // camada de composição pronta antes da transição (evita o quadro "quadriculado")
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  // 3) ícone de expandir: dentro da área da cortina, à direita; desliza da
+  //    direita com um pequeno atraso depois que a cortina sobe.
+  &__expand {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    // Sem container: só o ícone branco; a legibilidade sobre a cortina vem do
+    // drop-shadow escuro no glifo (a caixa de 2,5rem só mantém a posição).
+    color: var(--c-white);
+    opacity: 0;
+    // entra de baixo, no mesmo movimento e timing da cortina (sem delay)
+    transform: translateY(24px);
+    transition:
+      transform 0.32s var(--ease-out),
+      opacity 0.32s var(--ease-out);
+    pointer-events: none;
+    will-change: transform, opacity;
+
+    .icon {
+      width: 1.15rem;
+      height: 1.15rem;
+      // as setas do Bootstrap são finas: um traço na cor do glifo as encorpa
+      stroke: currentColor;
+      stroke-width: 0.6;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+    }
+  }
+
+  // Touch (sem hover): cortina e ícone sempre visíveis, sem depender de :hover.
+  // Com mouse/trackpad (hover: hover + pointer: fine) vale o padrão acima:
+  // escondidos até o hover/foco.
+  @media (hover: none) {
+    .ativ__curtain {
+      transform: translateY(0);
+    }
+
+    .ativ__expand {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // borda "pintada" que aparece no hover/foco
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    border: 3px solid var(--accent);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out);
+    pointer-events: none;
+  }
+
+  .chip {
+    position: absolute;
+    z-index: 3;
+    left: 1.1rem;
+    bottom: 1.1rem;
+    transition: transform 0.45s var(--ease-out);
+  }
+
+  // enquanto a imagem está "fora" (no card expandido), o chip some
+  &.is-empty .chip {
+    opacity: 0;
+  }
+
+  // ---- Estado ativo: hover do card ou foco por teclado no botão ----
+  // (a mesma animação nos dois casos)
+  &:hover,
+  &:has(.ativ__btn:focus-visible) {
+    &::before {
+      opacity: 1;
+    }
+
+    .ativ__media img {
+      transform: scale(1.06);
+    }
+
+    .ativ__curtain {
+      transform: translateY(0);
+    }
+
+    .ativ__expand {
+      opacity: 1;
+      transform: translateY(0); // sobe junto com a cortina, um movimento só
+    }
+
+    .chip {
+      transform: translateY(-4px);
+    }
+  }
+
+  // foco por teclado: anel navy externo (desenhado no card, acima do botão)
+  &:has(.ativ__btn:focus-visible) {
+    outline: 3px solid var(--c-navy);
+    outline-offset: 4px;
+
+    .ativ__btn:focus-visible {
+      outline: none;
+    }
+  }
+
+  // fallback sem :has — o foco no botão ainda mostra cortina e ícone
+  .ativ__btn:focus-visible {
+    .ativ__curtain {
+      transform: translateY(0);
+    }
+
+    .ativ__expand {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Card expandido (diálogo) — imagem à esquerda, título + descrição à direita.
+// A picture do card clicado é movida para __media e animada com GSAP Flip.
+// ---------------------------------------------------------------------------
+.ativ-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+  overflow-y: auto;
+
+  &[hidden] {
+    display: none;
+  }
+
+  &__backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(12, 26, 64, 0.72);
+    backdrop-filter: blur(6px);
+  }
+
+  &__panel {
+    position: relative;
+    width: min(100%, 68rem);
+    display: grid;
+    gap: 0;
+    // sem overflow hidden aqui: a imagem precisa sair do painel ao "voar" de volta
+
+    @include bp(md) {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      align-items: stretch;
+    }
+  }
+
+  &__surface {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--c-white);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  &__media {
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+
+    @include bp(md) {
+      aspect-ratio: auto;
+      min-height: 26rem;
+      border-radius: var(--r-lg) 0 0 var(--r-lg);
+    }
+
+    // Fora do fluxo, de propósito: em fluxo a <picture> tem height: 100%, que
+    // não resolve na hora de calcular o tamanho intrínseco da linha do grid —
+    // o navegador cai na proporção natural da foto (1:1) e é ELA que passa a
+    // definir a altura do painel. Como essa contribuição só existe depois que
+    // o bitmap decodifica, o painel dava um salto de ~40px quando a imagem
+    // terminava de carregar (e o Flip, que mede o estado final antes disso,
+    // pousava na altura errada). Absoluta, a foto preenche a coluna sem opinar
+    // sobre a altura: a linha é a do texto, com o piso de min-height.
+    picture {
+      position: absolute;
+      inset: 0;
+      display: block;
+      border-radius: inherit;
+      overflow: hidden;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: none;
+    }
+  }
+
+  &__body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    padding: clamp(1.75rem, 1.25rem + 2vw, 3rem) clamp(1.5rem, 1rem + 2.5vw, 3.5rem) clamp(2rem, 1.5rem + 2vw, 3.25rem);
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 1rem;
+    background: var(--accent-tint, var(--c-rosa-tint));
+    color: var(--accent, var(--c-rosa));
+
+    .icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  &__title {
+    font-size: var(--fs-h3);
+  }
+
+  // a descrição é mais longa que o resto da página: corpo maior e mais arejado
+  &__text {
+    font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.1875rem);
+    line-height: 1.75;
+    color: var(--c-escuro);
+    max-width: 38rem;
+
+    // descrições com mais de um parágrafo (a Musicalização tem dois)
+    p + p {
+      margin-top: 0.85em;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    color: var(--c-navy);
+    background: var(--c-white);
+    border: 1px solid var(--c-line);
+    box-shadow: var(--shadow-sm);
+    @include hover-lift(0, 1.06);
+
+    .icon {
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+
+    @include bp(md) {
+      top: 1rem;
+      right: 1rem;
+    }
+  }
+}
+
+body.dialog-open {
+  overflow: hidden;
+}

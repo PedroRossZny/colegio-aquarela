@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.DS_Store
+Thumbs.db
+*.log
+.vite/
+
+# Ferramentas locais e deploy
+.claude/
+.vercel/
+.env*
+
+# Banner do Vestibulinho (fonte da foto da seção; não é publicado)
+content/vestibulinho/

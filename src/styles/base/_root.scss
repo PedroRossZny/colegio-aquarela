@@ -1,0 +1,58 @@
+@use '../abstracts/tokens' as t;
+
+:root {
+  color-scheme: light;
+
+  // Cores — paleta oficial
+  --c-navy: #001870;
+  --c-navy-deep: #0c1a40;   // tom da sombra das fotos
+  --c-navy-hover: #0b2a9c;
+  --c-rosa: #f00078;
+  --c-rosa-deep: #c2005f;
+  --c-laranja: #f87000;
+  --c-laranja-deep: #ad4e00; // escuro o bastante para texto sobre fundo claro (~5:1)
+  --c-verde: #009828;
+  --c-verde-deep: #007a20;
+  --c-claro: #f7f8fc;
+  --c-escuro: #1a1f36;
+  --c-white: #ffffff;
+  --c-line: rgba(0, 24, 112, 0.1);
+  --c-muted: #5a6180;
+
+  // Tintas (fundos suaves)
+  --c-rosa-tint: color-mix(in srgb, var(--c-rosa) 10%, white);
+  --c-laranja-tint: color-mix(in srgb, var(--c-laranja) 12%, white);
+  --c-verde-tint: color-mix(in srgb, var(--c-verde) 10%, white);
+  --c-navy-tint: color-mix(in srgb, var(--c-navy) 6%, white);
+
+  // Tipografia
+  --font-display: #{t.$font-display};
+  --font-body: #{t.$font-body};
+  --font-hand: #{t.$font-hand};
+
+  --fs-display: clamp(2.5rem, 1.55rem + 4.2vw, 4.9rem);
+  --fs-h2: clamp(2rem, 1.45rem + 2.4vw, 3.4rem);
+  --fs-h3: clamp(1.5rem, 1.25rem + 1.1vw, 2.1rem);
+  --fs-h4: clamp(1.15rem, 1.05rem + 0.5vw, 1.35rem);
+  --fs-lead: clamp(1.125rem, 1.02rem + 0.5vw, 1.3rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.9375rem;
+  --fs-hand: clamp(1.35rem, 1.2rem + 0.7vw, 1.75rem);
+
+  // Espaço
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --section: clamp(4.5rem, 3rem + 6vw, 8.5rem);
+  --header-h: 5.25rem;
+  --header-h-compact: 4.25rem;
+
+  // Raios e sombras
+  --r-sm: 0.75rem;
+  --r-md: 1.25rem;
+  --r-lg: 2rem;
+  --r-pill: 999px;
+  --shadow-sm: 0 2px 8px -2px rgba(12, 26, 64, 0.12);
+  --shadow-md: 0 14px 34px -14px rgba(12, 26, 64, 0.28);
+  --shadow-lg: 0 32px 64px -24px rgba(12, 26, 64, 0.38);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}

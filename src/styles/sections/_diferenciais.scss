@@ -1,0 +1,133 @@
+@use "../abstracts/mixins" as *;
+
+// Diferenciais — bloco navy com bordas em pincelada.
+.diferenciais {
+  --divider-h: clamp(2.5rem, 6vw, 5.5rem);
+  background: var(--c-navy);
+  color: var(--c-white);
+  margin-block: var(--divider-h);
+  padding-block: clamp(3rem, 2rem + 4vw, 6rem);
+
+  &::before {
+    @include wash(var(--c-rosa), var(--c-verde), var(--c-laranja));
+    opacity: 0.9;
+  }
+
+  .brush-divider--top {
+    top: calc(-1 * var(--divider-h) + 1px);
+    height: var(--divider-h);
+  }
+
+  .brush-divider--bottom {
+    bottom: calc(-1 * var(--divider-h) + 1px);
+    height: var(--divider-h);
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-head {
+    margin-bottom: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+  }
+
+  &__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+
+    @include bp(md) {
+      gap: 1.25rem;
+    }
+  }
+}
+
+// O <li> (.dif-item) carrega o data-aos; o card (.dif) fica livre para o hover.
+.dif-item {
+  flex: 1 1 100%;
+  max-width: 100%;
+  display: flex;
+
+  @include bp(sm) {
+    flex: 1 1 calc(33.333% - 1.25rem);
+  }
+
+  @include bp(xl) {
+    flex: 1 1 0;
+  }
+}
+
+.dif {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 1rem 1.25rem;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--r-md);
+  transition:
+    translate 0.35s var(--ease-out),
+    background-color 0.35s var(--ease-out),
+    border-color 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out);
+
+  @include bp(sm) {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem 1.25rem;
+    text-align: center;
+  }
+
+  &:hover {
+    translate: 0 -6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+    box-shadow: 0 24px 48px -24px color-mix(in srgb, var(--accent) 60%, transparent);
+  }
+
+  // Ícone: NAVY sobre o círculo de acento (regra de contraste — laranja não
+  // pode receber branco; navy passa em rosa, laranja e verde).
+  &__icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--c-navy);
+    transition: transform 0.35s var(--ease-out);
+
+    @include bp(sm) {
+      width: 4rem;
+      height: 4rem;
+    }
+
+    .icon {
+      width: 1.5rem;
+      height: 1.5rem;
+
+      @include bp(sm) {
+        width: 1.75rem;
+        height: 1.75rem;
+      }
+    }
+  }
+
+  &:hover &__icon {
+    transform: rotate(-8deg) scale(1.06);
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    line-height: 1.25;
+    color: var(--c-white);
+    text-wrap: balance;
+  }
+}

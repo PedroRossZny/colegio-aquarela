@@ -1,0 +1,16 @@
+// Tokens de design — Colégio Aquarela
+// Paleta oficial: content/paleta-cores.md (extraída da logo vetorial).
+
+// Breakpoints (mobile-first)
+$bp: (
+  sm: 40em,   // 640px
+  md: 48em,   // 768px
+  lg: 64em,   // 1024px
+  xl: 80em,   // 1280px
+);
+
+$font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+$font-body: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+$font-hand: 'Caveat', 'Segoe Script', cursive;
+
+$container: 74rem;

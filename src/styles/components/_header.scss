@@ -1,0 +1,232 @@
+@use "../abstracts/mixins" as *;
+
+// Cabeçalho fixo — sólido claro (funciona com as duas logos: a vetorial é navy).
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  height: var(--header-h);
+  transition: height 0.35s var(--ease-out);
+
+  // O fundo com blur fica num pseudo-elemento: backdrop-filter/transform no
+  // próprio header criariam um containing block e prenderiam o menu mobile
+  // (position: fixed) dentro dele.
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: color-mix(in srgb, var(--c-claro) 88%, transparent);
+    // Só a forma sem prefixo: o minificador (lightningcss) adiciona -webkit-
+    // conforme os targets. Escrever as duas à mão faz ele manter apenas a
+    // prefixada, e o Chrome fica sem o blur.
+    backdrop-filter: blur(14px) saturate(1.4);
+    border-bottom: 1px solid transparent;
+    transition:
+      box-shadow 0.35s var(--ease-out),
+      border-color 0.35s var(--ease-out),
+      background-color 0.35s var(--ease-out);
+  }
+
+  &.is-scrolled {
+    height: var(--header-h-compact);
+
+    &::before {
+      background: color-mix(in srgb, var(--c-claro) 94%, transparent);
+      border-color: var(--c-line);
+      box-shadow: 0 10px 30px -18px rgba(12, 26, 64, 0.35);
+    }
+  }
+
+  &__inner {
+    @include container;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    height: 100%;
+  }
+}
+
+.brand {
+  position: relative;
+  z-index: 101; // acima do overlay do menu mobile
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  flex: none;
+
+  img {
+    height: 4.25rem;
+    width: auto;
+    transition: height 0.35s var(--ease-out);
+  }
+
+  .is-scrolled & img {
+    height: 3.4rem;
+  }
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.5rem, 1.8vw, 1.75rem);
+  }
+
+  &__link {
+    position: relative;
+    display: inline-block;
+    padding: 0.5rem 0.25rem;
+    font-weight: 700;
+    color: var(--c-navy);
+    transition: color $hover-duration var(--ease-out);
+
+    // texto ganha o tom escuro do acento (todos >= 4,5:1 sobre o fundo claro)
+    &:hover,
+    &:focus-visible {
+      color: var(--accent-deep, var(--c-rosa-deep));
+    }
+
+    // sublinhado: barra reta de espessura constante, revelada da esquerda no hover
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0.25rem;
+      right: 0.25rem;
+      bottom: 0.1rem;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--accent, var(--c-rosa));
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.3s var(--ease-out);
+    }
+
+    &:hover::after,
+    &:focus-visible::after {
+      transform: scaleX(1);
+    }
+
+    &:nth-child(1) { --accent: var(--c-rosa); }
+  }
+
+  &__list li:nth-child(1) .site-nav__link { --accent: var(--c-rosa); --accent-deep: var(--c-rosa-deep); }
+  &__list li:nth-child(2) .site-nav__link { --accent: var(--c-laranja); --accent-deep: var(--c-laranja-deep); }
+  &__list li:nth-child(3) .site-nav__link { --accent: var(--c-verde); --accent-deep: var(--c-verde-deep); }
+  &__list li:nth-child(4) .site-nav__link { --accent: var(--c-rosa); --accent-deep: var(--c-rosa-deep); }
+  &__list li:nth-child(5) .site-nav__link { --accent: var(--c-laranja); --accent-deep: var(--c-laranja-deep); }
+
+  &__cta {
+    // no menu o botão é navy (contraste 14:1 em qualquer tamanho)
+  }
+
+  // ---- Mobile: overlay full-screen ----
+  @include bp-down(lg) {
+    position: fixed;
+    inset: 0;
+    z-index: 95;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    gap: 2rem;
+    padding: calc(var(--header-h) + 1rem) var(--gutter) 3rem;
+    background: var(--c-claro);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.3s var(--ease-out),
+      visibility 0s linear 0.3s;
+    overflow-y: auto;
+
+    &::before {
+      @include wash(var(--c-rosa), var(--c-verde), var(--c-laranja));
+    }
+
+    &.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition-delay: 0s;
+    }
+
+    &__list {
+      position: relative;
+      z-index: 1;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25rem;
+    }
+
+    &__link {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 8vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      padding: 0.35rem 0.25rem;
+
+      &::after {
+        bottom: 0.2rem;
+        height: 6px;
+        border-radius: 6px;
+      }
+    }
+
+    &__cta {
+      position: relative;
+      z-index: 1;
+      align-self: flex-start;
+      font-size: 1.1875rem;
+    }
+  }
+}
+
+// Botão hambúrguer
+.nav-toggle {
+  position: relative;
+  z-index: 101;
+  display: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  color: var(--c-navy);
+  background: var(--c-white);
+  border: 1px solid var(--c-line);
+  box-shadow: var(--shadow-sm);
+  flex: none;
+
+  @include bp-down(lg) {
+    display: grid;
+    place-items: center;
+  }
+
+  span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1.25rem;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s var(--ease-out), opacity 0.2s;
+
+    &:nth-child(1) { transform: translate(-50%, calc(-50% - 6px)); }
+    &:nth-child(3) { transform: translate(-50%, calc(-50% + 6px)); }
+  }
+
+  &[aria-expanded="true"] span {
+    &:nth-child(1) { transform: translate(-50%, -50%) rotate(45deg); }
+    &:nth-child(2) { opacity: 0; }
+    &:nth-child(3) { transform: translate(-50%, -50%) rotate(-45deg); }
+  }
+}
+
+body.menu-open {
+  overflow: hidden;
+}

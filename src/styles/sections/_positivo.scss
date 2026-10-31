@@ -1,0 +1,93 @@
+@use "../abstracts/mixins" as *;
+
+// Sistema de Ensino Positivo — texto à esquerda, logo do sistema num cartão
+// branco à direita. Fundo claro entre o branco dos Segmentos e o navy dos
+// Diferenciais; a logo tem letreiro preto e só funciona sobre fundo claro.
+.positivo {
+  background: var(--c-claro);
+  overflow: clip;
+
+  &::before {
+    @include wash(var(--c-verde), var(--c-laranja), var(--c-rosa));
+    opacity: 0.65;
+  }
+
+  &__blob {
+    width: 26rem;
+    height: 22rem;
+    right: -11rem;
+    top: -8rem;
+    opacity: 0.3;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__inner {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+
+    @include bp(lg) {
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: clamp(3rem, 6vw, 6rem);
+    }
+  }
+
+  &__body {
+    max-width: 40rem;
+
+    h2 {
+      margin-bottom: 1.25rem;
+    }
+
+    p {
+      color: var(--c-escuro);
+      font-size: 1.125rem;
+
+      & + p {
+        margin-top: 1rem;
+      }
+    }
+  }
+
+  // Cartão do selo: branco atrás da logo (o letreiro dela é preto), com uma
+  // pincelada de acento escapando por trás, como as molduras de foto do site.
+  &__selo {
+    position: relative;
+    justify-self: center;
+    width: 100%;
+    max-width: 26rem;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 8% -6% -8% 6%;
+      z-index: 0;
+      @include blob(2);
+      background: linear-gradient(135deg, var(--c-verde-tint), color-mix(in srgb, var(--c-laranja) 18%, white));
+      transform: rotate(-5deg);
+    }
+
+    picture {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      padding: clamp(2rem, 1.5rem + 2vw, 3rem) clamp(1.5rem, 1rem + 2vw, 2.5rem);
+      background: var(--c-white);
+      border: 1px solid var(--c-line);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-lg);
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      max-width: 17.5rem; // 280px: o tamanho em que a logo é gerada
+      height: auto;
+    }
+  }
+}

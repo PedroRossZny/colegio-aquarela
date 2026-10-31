@@ -1,0 +1,103 @@
+@use "../abstracts/mixins" as *;
+
+// Botões — hover unificado via mixin hover-lift (mesmo do menu, hero, rodapé, FAB).
+// Regra de contraste (WCAG AA):
+//  - fundo rosa/verde + texto branco SÓ em .btn--lg (>= 19px, 800) — texto grande.
+//  - laranja NUNCA como fundo com texto branco; laranja só em ícone/borda/decoração.
+//  - navy e branco podem carregar qualquer tamanho.
+.btn {
+  --btn-bg: var(--c-navy);
+  --btn-fg: var(--c-white);
+  --btn-bg-hover: var(--c-navy-hover);
+  --btn-fg-hover: var(--c-white);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  padding: 0.85em 1.6em;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 1.0625rem;
+  line-height: 1.2;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: 2px solid transparent;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+  @include hover-lift;
+
+  .icon {
+    width: 1.15em;
+    height: 1.15em;
+    transition: transform $hover-duration var(--ease-out);
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: var(--btn-bg-hover);
+    color: var(--btn-fg-hover);
+  }
+
+  &:hover .icon--arrow {
+    transform: translateX(3px);
+  }
+
+  &:hover .icon--down {
+    transform: translateY(3px);
+  }
+
+  &--lg {
+    font-size: 1.1875rem;
+    padding: 1em 1.9em;
+  }
+
+  &--rosa {
+    --btn-bg: var(--c-rosa);
+    --btn-bg-hover: var(--c-rosa-deep);
+    // força tamanho grande: branco sobre rosa é 4,0:1 (AA só para texto grande)
+    font-size: 1.1875rem;
+    padding: 1em 1.9em;
+  }
+
+  &--verde {
+    --btn-bg: var(--c-verde);
+    --btn-bg-hover: var(--c-verde-deep);
+    font-size: 1.1875rem;
+    padding: 1em 1.9em;
+  }
+
+  &--white {
+    --btn-bg: var(--c-white);
+    --btn-fg: var(--c-navy);
+    --btn-bg-hover: var(--c-claro);
+    --btn-fg-hover: var(--c-navy);
+  }
+
+  &--ghost {
+    --btn-bg: transparent;
+    --btn-fg: var(--c-navy);
+    --btn-bg-hover: var(--c-navy-tint);
+    --btn-fg-hover: var(--c-navy);
+    border-color: var(--c-navy);
+
+    &:hover,
+    &:focus-visible {
+      box-shadow: none;
+    }
+  }
+
+  &--ghost-light {
+    --btn-bg: rgba(255, 255, 255, 0.08);
+    --btn-fg: var(--c-white);
+    --btn-bg-hover: rgba(255, 255, 255, 0.16);
+    --btn-fg-hover: var(--c-white);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  &--sm {
+    font-size: 0.9375rem;
+    padding: 0.65em 1.2em;
+  }
+}

@@ -1,0 +1,183 @@
+@use "../abstracts/mixins" as *;
+
+.site-footer {
+  --divider-h: clamp(2.5rem, 6vw, 5.5rem);
+  position: relative;
+  background: var(--c-claro);
+  color: var(--c-escuro);
+  padding-block: 1rem clamp(1.5rem, 3vw, 2.5rem);
+
+  .brush-divider--top {
+    top: calc(-1 * var(--divider-h) + 1px);
+    height: var(--divider-h);
+  }
+
+  &__grid {
+    display: grid;
+    gap: 2.25rem;
+    padding-block: clamp(1.5rem, 3vw, 3rem) clamp(2rem, 4vw, 3.5rem);
+
+    @include bp(md) {
+      grid-template-columns: 1.4fr 1fr 1fr;
+    }
+
+    @include bp(lg) {
+      grid-template-columns: 1.6fr 1fr 1fr 0.8fr;
+    }
+  }
+
+  &__brand img {
+    height: 6rem;
+    width: auto;
+    margin-bottom: 1rem;
+  }
+
+  &__tagline {
+    font-family: var(--font-hand);
+    font-size: 1.6rem;
+    line-height: 1.15;
+    color: var(--c-navy);
+    max-width: 18rem;
+  }
+
+  &__col h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-navy);
+    margin-bottom: 1rem;
+  }
+
+  // só os itens de texto diretos da coluna (não os ícones sociais dentro de ul.social)
+  &__col > p,
+  &__col > a:not(.btn) {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  &__col > a:not(.btn) {
+    color: var(--c-navy);
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--c-rosa-deep);
+    }
+  }
+
+  &__col > p .icon,
+  &__col > a:not(.btn) .icon {
+    width: 1.15em;
+    height: 1.15em;
+    margin-top: 0.2em; // alinha com a primeira linha do texto (itens com quebra)
+    color: var(--accent, var(--c-rosa));
+  }
+
+  // botão do WhatsApp: ícone e texto centralizados pelo flex do .btn
+  &__col .btn {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &__col > * + * {
+    margin-top: 0.75rem;
+  }
+
+  &__col .btn {
+    margin-top: 1rem;
+  }
+
+  &__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--c-line);
+    font-size: var(--fs-small);
+    color: var(--c-muted);
+
+    // copyright + crédito de desenvolvimento, empilhados
+    .site-footer__legal {
+      display: grid;
+      gap: 0.3rem;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.5rem;
+      font-weight: 700;
+      // espaço à direita para o botão flutuante do WhatsApp não cobrir os links
+      padding-right: clamp(4.5rem, 3rem + 4vw, 6.5rem);
+
+      a {
+        color: var(--c-navy);
+
+        &:hover {
+          color: var(--c-rosa-deep);
+        }
+      }
+    }
+  }
+
+  // Crédito de desenvolvimento: 80% do tamanho do resto do rodapé e um tom
+  // acinzentado mais claro que o --c-muted usado ao lado — discreto, sem
+  // disputar atenção com a marca da escola.
+  // 90% de --c-muted é o limite: dá 4,53:1 sobre o --c-claro do rodapé, ainda
+  // dentro do AA (4,5:1) para texto pequeno. Mais claro que isso reprova.
+  &__credit {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: color-mix(in srgb, var(--c-muted) 90%, white);
+
+    a {
+      color: inherit;
+      transition: color 0.2s var(--ease-out);
+
+      &:hover,
+      &:focus-visible {
+        color: var(--c-navy);
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+      }
+    }
+  }
+}
+
+.social {
+  display: flex;
+  gap: 0.75rem;
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    color: var(--c-navy);
+    background: var(--c-white);
+    border: 1px solid var(--c-line);
+    box-shadow: var(--shadow-sm);
+    @include hover-lift; // mesmo hover dos botões (o mixin já transiciona as cores)
+
+    &:hover,
+    &:focus-visible {
+      color: var(--c-white);
+      background: var(--c-navy);
+      border-color: var(--c-navy);
+    }
+
+    .icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin: 0;
+      vertical-align: 0;
+    }
+  }
+}

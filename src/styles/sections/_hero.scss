@@ -1,0 +1,228 @@
+@use "../abstracts/mixins" as *;
+
+// Evita o "flash" do hero antes do GSAP assumir: só com JS, só sem reduced-motion,
+// e com failsafe (se o JS falhar, tudo aparece depois de 3s).
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not(.motion-ready) [data-hero],
+  html.js:not(.motion-ready) .site-header__inner {
+    opacity: 0;
+    animation: hero-failsafe 0s 3s forwards;
+  }
+}
+
+@keyframes hero-failsafe {
+  to {
+    opacity: 1;
+  }
+}
+
+// Hero split: texto à esquerda, foto em máscara orgânica à direita.
+.hero {
+  position: relative;
+  padding-top: calc(var(--header-h) + clamp(2.5rem, 6vw, 5rem));
+  padding-bottom: clamp(3rem, 6vw, 5.5rem);
+  background: var(--c-claro);
+  overflow: clip;
+
+  &::before {
+    @include wash(var(--c-rosa), var(--c-verde), var(--c-laranja));
+  }
+
+  &__blob {
+    &--1 { width: 34rem; height: 30rem; top: -8rem; left: -12rem; }
+    &--2 { width: 30rem; height: 26rem; right: -10rem; bottom: -10rem; }
+    &--3 { width: 16rem; height: 14rem; right: 34%; top: 8%; opacity: 0.4; }
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    align-items: center;
+
+    @include bp(lg) {
+      grid-template-columns: 1.05fr 1fr;
+      min-height: min(calc(100svh - var(--header-h) - 6rem), 46rem);
+    }
+  }
+
+  &__content {
+    max-width: 38rem;
+  }
+
+  .eyebrow {
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    margin-bottom: 1.25rem;
+    // sublinhado animável pelo GSAP via --paint-scale
+    .paint::after {
+      transform: scaleX(var(--paint-scale, 1));
+    }
+  }
+
+  &__lead {
+    max-width: 32rem;
+    margin-bottom: 1.5rem;
+    color: var(--c-escuro);
+  }
+
+  &__pill {
+    margin-bottom: 1.75rem;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem 1rem;
+  }
+
+  // ---- Mídia ----
+  &__media {
+    position: relative;
+
+    @include bp(lg) {
+      // sangra um pouco para a borda direita da tela
+      margin-right: calc(-1 * clamp(0rem, 6vw, 6rem));
+    }
+  }
+
+  // Recorte mais largo (a foto é 16:9): com 5/4 o cover cortava ~30% da cena e
+  // parecia zoom; com 3/2 corta ~16% e a fachada aparece inteira, com o letreiro
+  // acima do card flutuante.
+  &__frame {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    @include blob(1);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    background: var(--c-navy-tint);
+
+    @include bp(lg) {
+      aspect-ratio: 3 / 2;
+    }
+
+    picture,
+    img {
+      width: 100%;
+      height: 100%;
+    }
+
+    img {
+      object-fit: cover;
+      object-position: 55% 45%;
+    }
+  }
+
+  // pincelada colorida atrás da foto
+  &__media::before {
+    content: "";
+    position: absolute;
+    inset: 6% -4% -6% 6%;
+    z-index: 0;
+    @include blob(2);
+    background: linear-gradient(135deg, var(--c-rosa-tint), color-mix(in srgb, var(--c-laranja) 22%, white));
+    transform: rotate(-6deg);
+  }
+
+  &__media::after {
+    content: "";
+    position: absolute;
+    width: 22%;
+    aspect-ratio: 1;
+    right: -3%;
+    top: -4%;
+    z-index: 0;
+    @include blob(3);
+    background: color-mix(in srgb, var(--c-verde) 18%, white);
+  }
+
+  &__frame {
+    z-index: 1;
+  }
+
+  // Card flutuante com os segmentos (frases exatas do texto)
+  &__card {
+    position: relative;
+    z-index: 2;
+    margin: -2.5rem 1rem 0 1rem;
+    padding: 1.15rem 1.35rem;
+    background: var(--c-white);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-lg);
+
+    @include bp(sm) {
+      position: absolute;
+      left: -1rem;
+      bottom: 1.5rem;
+      margin: 0;
+      max-width: 19rem;
+    }
+
+    @include bp(lg) {
+      left: -2.5rem;
+      bottom: 2rem;
+    }
+  }
+
+  &__card-title {
+    font-family: var(--font-hand);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--c-navy);
+    margin-bottom: 0.6rem;
+  }
+
+  &__card ul {
+    display: grid;
+    gap: 0.35rem;
+    font-weight: 700;
+    font-size: var(--fs-small);
+    color: var(--c-escuro);
+  }
+
+  &__card li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+}
+
+.dot {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  flex: none;
+  @include blob(2);
+  background: var(--c-rosa);
+
+  &--laranja { background: var(--c-laranja); }
+  &--verde { background: var(--c-verde); }
+}
+
+// Três pingos de tinta — "eyebrow" decorativo das seções
+.dabs {
+  display: inline-flex;
+  gap: 0.45rem;
+  margin-bottom: 0.9rem;
+
+  span {
+    width: 0.9rem;
+    height: 0.9rem;
+    @include blob(1);
+    background: var(--c-rosa);
+
+    &:nth-child(2) {
+      @include blob(2);
+      background: var(--c-laranja);
+    }
+
+    &:nth-child(3) {
+      @include blob(3);
+      background: var(--c-verde);
+    }
+  }
+}

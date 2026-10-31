@@ -1,0 +1,241 @@
+@use "../abstracts/mixins" as *;
+
+// Segmentos — 3 blocos em zigue-zague ligados por uma "linha da jornada".
+.segmentos {
+  background: var(--c-white);
+  overflow: clip;
+  padding-bottom: calc(var(--section) * 0.55);
+
+  &__list {
+    position: relative;
+    display: grid;
+    gap: clamp(4rem, 7vw, 7.5rem);
+  }
+
+  // Linha vertical central (só desktop): tracejada + preenchimento com scroll
+  &__line {
+    display: none;
+
+    @include bp(lg) {
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 2rem;
+      bottom: 2rem;
+      width: 4px;
+      margin-left: -2px;
+      border-radius: 4px;
+      background: repeating-linear-gradient(
+        to bottom,
+        var(--c-line) 0 10px,
+        transparent 10px 20px
+      );
+    }
+  }
+
+  &__line-fill {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(to bottom, var(--c-rosa), var(--c-laranja) 50%, var(--c-verde));
+    transform: scaleY(0);
+    transform-origin: top center;
+
+    @media (prefers-reduced-motion: reduce) {
+      transform: none;
+    }
+  }
+}
+
+.segmento {
+  position: relative;
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+
+  @include bp(lg) {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(3rem, 7vw, 7rem);
+
+    &--reverse &__media {
+      order: 2;
+    }
+  }
+
+  // ---- Foto ----
+  &__media {
+    position: relative;
+    z-index: 1;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 5% -5% -7% 7%;
+      z-index: 0;
+      @include blob(2);
+      background: var(--accent-tint);
+      transform: rotate(5deg);
+    }
+  }
+
+  &--reverse &__media::before {
+    inset: 5% 7% -7% -5%;
+    transform: rotate(-5deg);
+  }
+
+  &__frame {
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 4 / 3;
+    @include blob(1);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    background: var(--accent-tint);
+
+    picture {
+      height: 100%;
+    }
+
+    img {
+      width: 100%;
+      height: 118%;
+      margin-top: -9%;
+      object-fit: cover;
+      will-change: transform;
+    }
+  }
+
+  &:nth-of-type(2) &__frame { @include blob(2); }
+  &:nth-of-type(3) &__frame { @include blob(3); }
+
+  // Número grande decorativo
+  &__num {
+    position: absolute;
+    z-index: 2;
+    top: -1.25rem;
+    left: -0.5rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(4.5rem, 8vw, 7rem);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: var(--accent);
+    opacity: 0.22;
+    pointer-events: none;
+  }
+
+  &--reverse &__num {
+    left: auto;
+    right: -0.5rem;
+  }
+
+  // Nó na linha central
+  &__node {
+    display: none;
+
+    @include bp(lg) {
+      display: grid;
+      place-items: center;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 3;
+      width: 3.25rem;
+      height: 3.25rem;
+      translate: -50% -50%;
+      border-radius: 50%;
+      background: var(--c-white);
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 0 6px var(--c-white), var(--shadow-md);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--c-navy);
+    }
+  }
+
+  // ---- Texto ----
+  &__body {
+    position: relative;
+    z-index: 1;
+    max-width: 34rem;
+
+    @include bp(lg) {
+      padding-left: 1rem;
+    }
+  }
+
+  &--reverse &__body {
+    @include bp(lg) {
+      padding-left: 0;
+      padding-right: 1rem;
+      justify-self: end;
+    }
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: 1.25rem;
+    border-radius: 1.1rem;
+    background: var(--accent-tint);
+    color: var(--accent);
+    // laranja como cor de ícone sobre tinta clara: uso decorativo, permitido.
+
+    .icon {
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+
+    // Berçário: a dupla de personagens da logo mascote no lugar do ícone. A
+    // ilustração é larga (2:1), então a caixa cresce na horizontal e vira uma
+    // pílula com a mesma altura e tinta dos outros ícones.
+    &--mascote {
+      width: fit-content; // encolhe na ilustração (auto esticaria na coluna)
+      padding-inline: 0.6rem;
+
+      picture,
+      img {
+        display: block;
+      }
+
+      img {
+        height: 2.3rem;
+        width: auto;
+      }
+    }
+  }
+
+  h3 {
+    margin-bottom: 0.9rem;
+  }
+
+  &__tagline {
+    position: relative;
+    margin-bottom: 1rem;
+    padding-top: 0.9rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--fs-h4);
+    line-height: 1.3;
+    color: var(--c-navy);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3rem;
+      height: 5px;
+      border-radius: 5px;
+      background: var(--accent);
+    }
+  }
+
+  &__text {
+    font-size: 1.125rem;
+    color: var(--c-escuro);
+  }
+}
